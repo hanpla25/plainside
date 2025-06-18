@@ -14,7 +14,7 @@ export default function SearchForm({ value, onChange }: Props) {
         name="search"
         type="text"
         placeholder="갤러리 검색"
-        className="w-full border border-gray-300 rounded px-3 py-2"
+        className="w-full border border-gray-300 rounded px-3 py-1"
         value={value}
         onChange={onChange}
       />
