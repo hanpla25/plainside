@@ -8,7 +8,10 @@ type Props = {
 export default function SearchModalItem({ name, abbr }: Props) {
   return (
     <li>
-      <Link href={abbr} className="block px-4 py-2 hover:bg-gray-100">
+      <Link
+        href={`/gallery/${abbr}`}
+        className="block px-4 py-2 hover:bg-gray-100"
+      >
         {name}
       </Link>
     </li>

@@ -35,7 +35,13 @@ export default function Header({ galleryData }: { galleryData: Gallery[] }) {
       </header>
       {isOpenMenu && <Menu />}
       {isShowSearchForm && <SearchForm query={query} setQuery={setQuery} />}
-      {query.trim() && <SearchModal query={query} galleryData={galleryData} />}
+      {query.trim() && (
+        <SearchModal
+          query={query}
+          galleryData={galleryData}
+          onClose={() => setQuery("")}
+        />
+      )}
     </>
   );
 }
