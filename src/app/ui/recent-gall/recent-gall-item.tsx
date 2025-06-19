@@ -1,22 +1,24 @@
+import type { RecentGall } from "@/app/lib/definition";
 import { Trash2 } from "lucide-react";
 import Link from "next/link";
 
-type Props = {
-  abbr: string;
-  name: string;
-  href: string;
+type Props = RecentGall & {
   onRemove: (abbr: string) => void;
 };
 
 export default function RecentGallItem({ abbr, name, href, onRemove }: Props) {
   return (
-    <div className="flex items-center justify-between gap-1">
-      <Link href={href} className="truncate text-sm">
+    <li className="flex items-center gap-1 whitespace-nowrap">
+      <Link href={href} className="truncate hover:underline">
         {name}
       </Link>
-      <button onClick={() => onRemove(abbr)} className="p-1 hover:text-red-500">
+      <button
+        onClick={() => onRemove(abbr)}
+        className="text-xs text-red-500 hover:text-red-700 cursor-pointer"
+        type="button"
+      >
         <Trash2 size={14} />
       </button>
-    </div>
+    </li>
   );
 }

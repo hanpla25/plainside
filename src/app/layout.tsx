@@ -34,7 +34,7 @@ export default async function RootLayout({
       >
         <div className="min-h-[100vh]">
           <Header galleryData={galleryData} />
-          <RecentGall />
+          <RecentGall galleryData={galleryData} />
           {children}
         </div>
       </body>

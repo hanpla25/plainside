@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CateogryButton,
   LoginButton,
@@ -13,11 +13,19 @@ import SearchForm from "./search-form";
 import Menu from "./menu";
 import SearchModal from "./search-modal";
 import { Gallery } from "@/app/lib/definition";
+import { usePathname } from "next/navigation";
 
 export default function Header({ galleryData }: { galleryData: Gallery[] }) {
   const [isShowSearchForm, setIsShowSearchForm] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [query, setQuery] = useState("");
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setQuery("");
+    setIsShowSearchForm(false);
+  }, [pathname]);
 
   return (
     <>
