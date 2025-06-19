@@ -1,9 +1,14 @@
-export default function RealtimeBest() {
+import { Post } from "@/app/lib/definition";
+import RealtimeBestList from "./realtime-best-list";
+
+type Props = {
+  realtimeBestData: Post[];
+};
+
+export default function RealtimeBest({ realtimeBestData }: Props) {
   return (
-    <div>
-      <header className="p-2 border-b-2 border-neutral-300">
-        <span>실시간 베스트</span>
-      </header>
+    <div className="w-full">
+      <RealtimeBestList realtimeBestData={realtimeBestData} />
     </div>
   );
 }

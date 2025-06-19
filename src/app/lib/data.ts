@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "../utils/supabase/server";
-import { Gallery } from "./definition";
+import { Gallery, Post } from "./definition";
 
 export async function fetchGalleries(): Promise<Gallery[]> {
   const supabase = await createClient();
@@ -30,4 +30,21 @@ export async function fetchGallName(abbr: string): Promise<string> {
   }
 
   return data.gall_name;
+}
+
+export async function fetchRealtimePosts(): Promise<Post[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .gte("like_count", 10)
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data;
 }
