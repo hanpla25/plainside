@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./ui/header/header";
 import { fetchGalleries } from "./lib/data";
+import RecentGall from "./ui/recent-gall/recent-gall";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const galleryData = await fetchGalleries();
-  
+
   return (
     <html lang="ko">
       <body
@@ -33,6 +34,7 @@ export default async function RootLayout({
       >
         <div className="min-h-[100vh]">
           <Header galleryData={galleryData} />
+          <RecentGall />
           {children}
         </div>
       </body>

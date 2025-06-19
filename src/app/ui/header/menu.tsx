@@ -14,7 +14,7 @@ const menuItems = [
 
 export default function Menu() {
   return (
-    <div className="absolute bg-white z-50 p-4 w-[100vw] h-[100vh]">
+    <div className="absolute bg-white z-50 p-4 w-[100vw] h-[100vh] lg:hidden">
       <ul>
         {menuItems.map((item, i) => (
           <MobileWrapperItem href={item.href} label={item.label} key={i} />

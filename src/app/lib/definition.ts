@@ -5,3 +5,9 @@ export type Gallery = {
   creator_name: string;
   created_at: string;
 };
+
+export type RecentGall = {
+  abbr: string;
+  name: string;
+  href: string;
+};
