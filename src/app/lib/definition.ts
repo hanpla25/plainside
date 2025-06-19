@@ -1,5 +1,7 @@
-type RecentGallery = {
+export type Gallery = {
+  id: number;
   abbr: string;
-  name: string;
-  href: string;
+  gall_name: string;
+  creator_name: string;
+  created_at: string;
 };

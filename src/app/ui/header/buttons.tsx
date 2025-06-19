@@ -1,63 +1,63 @@
-import { Search } from "lucide-react";
+import { AlignJustify, Search } from "lucide-react";
 import Link from "next/link";
+import { SetStateAction } from "react";
 
 const buttonStyle = "bg-[#171717] text-white p-1 rounded-md text-[14px]";
 
-export function LoginButton() {
+export function MobileMenuButton({
+  setIsOpenMenu,
+}: {
+  setIsOpenMenu: React.Dispatch<SetStateAction<boolean>>;
+}) {
   return (
-    <Link href={"/login"} className={`${buttonStyle}`}>
-      로그인
-    </Link>
+    <AlignJustify
+      onClick={() => setIsOpenMenu((prev) => !prev)}
+      className="lg:hidden"
+    />
   );
 }
 
-export function ProfileButton() {
+export function SearchButton({
+  setIsShowSearchForm,
+}: {
+  setIsShowSearchForm: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
-    <Link href={"/profile"} className={`${buttonStyle}`}>
-      프로필
-    </Link>
+    <button
+      onClick={() => setIsShowSearchForm((prev) => !prev)}
+      className="lg:bg-neutral-200 rounded-md flex px-2 py-1 cursor-pointer"
+    >
+      <span className="text-neutral-400 font-light text-sm mr-3 hidden lg:block">
+        전체갤러리 검색
+      </span>
+      <Search size={18} />
+    </button>
   );
-}
-
-export function SignupButton() {
-  return (
-    <Link href={"/signup"} className={buttonStyle}>
-      회원가입
-    </Link>
-  );
-}
-
-export function LogoutButton() {
-  return <button className={`${buttonStyle}`}>로그아웃</button>;
 }
 
 export function CateogryButton() {
   return (
     <Link
       href={"/category"}
-      className="text-neutral-900 p-1 rounded-md text-[14px] border border-neutral-900"
+      className="text-neutral-900 p-1 rounded-md text-[14px] border border-neutral-900 hidden lg:block"
     >
       전체 갤러리
     </Link>
   );
 }
 
-export function SearchButton({ onClick }: { onClick: () => void }) {
+export function LoginButton() {
   return (
-    <button
-      onClick={onClick}
-      className="bg-gray-100 rounded-md p-1 flex justify-between px-4 w-sm "
-    >
-      <span className="text-gray-500">갤러리 검색</span>
-      <Search />
-    </button>
+    <Link href={"/login"} className={`${buttonStyle} hidden lg:block`}>
+      로그인
+    </Link>
   );
 }
 
-export function RecentVisitButton({ onClick }: { onClick: () => void }) {
+export function SignupButton() {
   return (
-    <button onClick={onClick} className="text-sm">
-      최근방문
-    </button>
+    <Link href={"/signup"} className={`${buttonStyle} hidden lg:block`}>
+      회원가입
+    </Link>
   );
 }

@@ -1,34 +1,23 @@
 "use client";
 
-import { AlignJustify, Search } from "lucide-react";
-import Logo from "./logo";
-import MobileSearchModal from "./mobile-search-modal";
-import { useEffect, useState } from "react";
-import MobileWrapper from "./mobile-menu";
+import { useState } from "react";
 import {
   CateogryButton,
   LoginButton,
-  LogoutButton,
-  ProfileButton,
-  RecentVisitButton,
+  MobileMenuButton,
   SearchButton,
   SignupButton,
 } from "./buttons";
-import { MobileRecentVisit, RecentVisit } from "../recent-visit/recent-visit";
-import { getRecentGalleries } from "@/app/hooks/useRecentGallery";
+import Logo from "./logo";
+import SearchForm from "./search-form";
+import Menu from "./menu";
+import SearchModal from "./search-modal";
+import { Gallery } from "@/app/lib/definition";
 
-const isLogin = true;
-
-export default function Header() {
-  const [openModal, setOpenModal] = useState(false);
-  const [openRecentVisit, setOpenRecentVisit] = useState(false);
-  const [openMenu, setOpenMenu] = useState(false);
-  const [search, setSearch] = useState("");
-  const [recentVisit, setRecentVisit] = useState<RecentGallery[]>([]);
-
-  useEffect(() => {
-    setRecentVisit(getRecentGalleries());
-  }, []);
+export default function Header({ galleryData }: { galleryData: Gallery[] }) {
+  const [isShowSearchForm, setIsShowSearchForm] = useState(false);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [query, setQuery] = useState("");
 
   return (
     <>
@@ -36,46 +25,17 @@ export default function Header() {
         <div>
           <Logo />
         </div>
-
-        {/** 모바일 메뉴 */}
-        <div className="lg:hidden flex gap-3">
-          <Search onClick={() => setOpenModal((prev) => !prev)} />
-          <RecentVisitButton
-            onClick={() => setOpenRecentVisit((prev) => !prev)}
-          />
-          <AlignJustify onClick={() => setOpenMenu((prev) => !prev)} />
-        </div>
-        {/* 모바일 메뉴 **/}
-
-        {/**데스크탑 메뉴 */}
-        <div className="hidden lg:flex space-x-2 items-center">
-          <SearchButton onClick={() => setOpenModal((prev) => !prev)} />
-          {isLogin ? (
-            <>
-              <ProfileButton />
-              <LogoutButton />
-            </>
-          ) : (
-            <>
-              <LoginButton />
-              <SignupButton />
-            </>
-          )}
-
+        <div className="flex gap-4">
+          <SearchButton setIsShowSearchForm={setIsShowSearchForm} />
+          <MobileMenuButton setIsOpenMenu={setIsOpenMenu} />
           <CateogryButton />
+          <LoginButton />
+          <SignupButton />
         </div>
-        {/*데스크탑 메뉴 **/}
       </header>
-
-      <MobileWrapper openMenu={openMenu} />
-      <MobileSearchModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        search={search}
-        setSearch={setSearch}
-      />
-      <RecentVisit recentVisit={recentVisit} />
-      {openRecentVisit && <MobileRecentVisit recentVisit={recentVisit} />}
+      {isOpenMenu && <Menu />}
+      {isShowSearchForm && <SearchForm query={query} setQuery={setQuery} />}
+      {query.trim() && <SearchModal query={query} galleryData={galleryData} />}
     </>
   );
 }

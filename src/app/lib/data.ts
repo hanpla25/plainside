@@ -1,19 +1,15 @@
-import { redirect } from "next/navigation";
 import { createClient } from "../utils/supabase/server";
+import { Gallery } from "./definition";
 
-export async function fetchGalleryName(abbr: string): Promise<string> {
+export async function fetchGalleries(): Promise<Gallery[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("galleries")
-    .select("gall_name")
-    .eq("abbr", abbr)
-    .single();
+  const { data, error } = await supabase.from("galleries").select("*");
 
   if (error) {
     console.error(error);
-    redirect("/");
+    return [];
   }
 
-  return data.gall_name;
+  return data;
 }

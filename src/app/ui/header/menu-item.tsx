@@ -5,7 +5,7 @@ type Props = {
   label: string;
 };
 
-export default function MobileWrapperItems({ href, label }: Props) {
+export default function MobileWrapperItem({ href, label }: Props) {
   return (
     <li className="p-2">
       <Link href={href}>{label}</Link>

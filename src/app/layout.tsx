@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./ui/header/header";
+import { fetchGalleries } from "./lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,18 +19,22 @@ export const metadata: Metadata = {
   description: "자유로운 커뮤니티",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const galleryData = await fetchGalleries();
+  
   return (
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900 max-w-6xl mx-auto`}
       >
-        <Header />
-        <div className="min-h-[100vh]">{children}</div>
+        <div className="min-h-[100vh]">
+          <Header galleryData={galleryData} />
+          {children}
+        </div>
       </body>
     </html>
   );
