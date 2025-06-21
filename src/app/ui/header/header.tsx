@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import {
   CateogryButton,
   LoginButton,
+  LogOutButton,
   MobileMenuButton,
+  ProfileButton,
   SearchButton,
   SignupButton,
 } from "./buttons";
@@ -12,10 +14,16 @@ import Logo from "./logo";
 import SearchForm from "./search-form";
 import Menu from "./menu";
 import SearchModal from "./search-modal";
-import { Gallery } from "@/app/lib/definition";
+import { Gallery, UserPayload } from "@/app/lib/definition";
 import { usePathname } from "next/navigation";
 
-export default function Header({ galleryData }: { galleryData: Gallery[] }) {
+export default function Header({
+  galleryData,
+  user,
+}: {
+  galleryData: Gallery[];
+  user: UserPayload | null;
+}) {
   const [isShowSearchForm, setIsShowSearchForm] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [query, setQuery] = useState("");
@@ -25,6 +33,7 @@ export default function Header({ galleryData }: { galleryData: Gallery[] }) {
   useEffect(() => {
     setQuery("");
     setIsShowSearchForm(false);
+    setIsOpenMenu(false);
   }, [pathname]);
 
   return (
@@ -33,15 +42,24 @@ export default function Header({ galleryData }: { galleryData: Gallery[] }) {
         <div>
           <Logo />
         </div>
-        <div className="flex gap-4">
+        <div className="flex lg:gap-2">
           <SearchButton setIsShowSearchForm={setIsShowSearchForm} />
           <MobileMenuButton setIsOpenMenu={setIsOpenMenu} />
           <CateogryButton />
-          <LoginButton />
-          <SignupButton />
+          {user ? (
+            <>
+              <ProfileButton />
+              <LogOutButton />
+            </>
+          ) : (
+            <>
+              <LoginButton />
+              <SignupButton />
+            </>
+          )}
         </div>
       </header>
-      {isOpenMenu && <Menu />}
+      {isOpenMenu && <Menu user={user} />}
       {isShowSearchForm && <SearchForm query={query} setQuery={setQuery} />}
       {query.trim() && (
         <SearchModal

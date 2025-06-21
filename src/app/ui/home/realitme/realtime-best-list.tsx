@@ -1,24 +1,27 @@
-
 import { Post } from "@/app/lib/definition";
 import RealtimeBestItem from "./realtime-best-item";
 
 type Props = {
-  realtimeBestData: Post[];
+  realtimeBestData: {
+    data: Post[];
+    count: number;
+    totalPages: number;
+  };
 };
 
 export default function RealtimeBestList({ realtimeBestData }: Props) {
-  if (realtimeBestData.length === 0) {
+  if (realtimeBestData.count === 0) {
     return (
-      <div className="flex justify-center py-70">
-        아직 실시간 베스트 게시글이 없습니다.
+      <div className="flex justify-center py-70 min-h-[80vh]">
+        게시글이 없습니다.
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="min-h-[70vh]">
       <ul>
-        {realtimeBestData.map((post) => (
+        {realtimeBestData.data.map((post) => (
           <RealtimeBestItem post={post} key={post.id} />
         ))}
       </ul>

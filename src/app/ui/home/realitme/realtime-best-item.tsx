@@ -14,9 +14,9 @@ export default function RealtimeBestItem({ post }: Props) {
         href={`/gallery/${post.abbr}/${post.id}`}
         className="flex flex-col gap-2"
       >
-        <div className="flex justify-between">
-          <span className="truncate">{post.title}</span>
-          <span className="text-red-600 font-light">
+        <div className="flex gap-2">
+          <span className="truncate hover:underline">{post.title}</span>
+          <span className="text-red-600 font-light text-sm">
             [{post.comment_count}]
           </span>
         </div>
@@ -28,7 +28,16 @@ export default function RealtimeBestItem({ post }: Props) {
             strokeWidth={0.5}
             className="h-3.5"
           />
-          <span>{formatDateTime(post.created_at, "full")}</span>
+          <span className="mr-2">
+            {formatDateTime(post.created_at, "relative")}
+          </span>
+          <Tally1
+            size={16}
+            color="#212121"
+            strokeWidth={0.5}
+            className="h-3.5"
+          />
+          <span>{post.nickname}</span>
         </div>
       </Link>
     </li>

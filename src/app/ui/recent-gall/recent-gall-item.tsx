@@ -9,7 +9,7 @@ type Props = RecentGall & {
 export default function RecentGallItem({ abbr, name, href, onRemove }: Props) {
   return (
     <li className="flex items-center gap-1 whitespace-nowrap">
-      <Link href={href} className="truncate hover:underline">
+      <Link href={href} className="truncate hover:underline text-sm">
         {name}
       </Link>
       <button
