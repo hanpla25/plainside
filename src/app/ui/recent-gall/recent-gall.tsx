@@ -38,7 +38,7 @@ export default function RecentGall({
     <>
       <div className="flex p-2 bg-neutral-100 gap-2 items-center">
         <span className={spanStyle}>최근방문</span>
-        <ul className="flex flex-1 gap-4 overflow-hidden">
+        <ul className="flex flex-1 gap-4 overflow-x-auto scrollbar-hide lg:overflow-hidden">
           {recentGall.slice(0, MAX_RECENT_GALL).map((item) => (
             <RecentGallItem
               key={item.abbr}

@@ -6,17 +6,29 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export async function fetchGalleries(): Promise<Gallery[]> {
+export async function fetchGalleries({
+  option,
+}: {
+  option?: "popular" | "latest";
+}): Promise<Gallery[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from("galleries").select("*");
+  let query = supabase.from("galleries").select("*");
+
+  if (option === "popular") {
+    query = query.order("today_post_count", { ascending: false });
+  } else if (option === "latest") {
+    query = query.order("id", { ascending: false });
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error(error);
     return [];
   }
 
-  return data;
+  return data ?? [];
 }
 
 export async function fetchGallName(abbr: string): Promise<string> {

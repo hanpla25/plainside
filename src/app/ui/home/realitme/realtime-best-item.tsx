@@ -10,12 +10,11 @@ type Props = {
 export default function RealtimeBestItem({ post }: Props) {
   return (
     <li className="px-2 py-4">
-      <Link
-        href={`/gallery/${post.abbr}/${post.id}`}
-        className="flex flex-col gap-2"
-      >
+      <div className="flex flex-col gap-2">
         <div className="flex gap-2">
-          <span className="truncate hover:underline">{post.title}</span>
+          <Link href={`/gallery/${post.abbr}/${post.id}`}>
+            <span className="truncate hover:underline">{post.title}</span>
+          </Link>
           <span className="text-red-600 font-light text-sm">
             [{post.comment_count}]
           </span>
@@ -39,7 +38,7 @@ export default function RealtimeBestItem({ post }: Props) {
           />
           <span>{post.nickname}</span>
         </div>
-      </Link>
+      </div>
     </li>
   );
 }

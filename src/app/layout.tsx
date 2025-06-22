@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./ui/header/header";
 import { fetchGalleries, getUserFromToken } from "./lib/data";
 import RecentGall from "./ui/recent-gall/recent-gall";
+import { Gallery } from "./lib/definition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,11 +23,20 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const galleryData = await fetchGalleries();
-  const user = await getUserFromToken();
+}: Readonly<{ children: React.ReactNode }>) {
+  let user = null;
+  let latestGalleryData: Gallery[] = [];
+
+  try {
+    const result = await Promise.all([
+      getUserFromToken(),
+      fetchGalleries({ option: "popular" }),
+    ]);
+    user = result[0];
+    latestGalleryData = result[1];
+  } catch (error) {
+    console.error("RootLayout fetch 실패:", error);
+  }
 
   return (
     <html lang="ko">
@@ -34,8 +44,8 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900 max-w-6xl mx-auto`}
       >
         <div className="min-h-[100vh]">
-          <Header galleryData={galleryData} user={user} />
-          <RecentGall galleryData={galleryData} />
+          <Header galleryData={latestGalleryData} user={user} />
+          <RecentGall galleryData={latestGalleryData} />
           {children}
         </div>
       </body>
