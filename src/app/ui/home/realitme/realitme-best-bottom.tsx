@@ -1,4 +1,4 @@
-import RealtimeBestPagination from "./realtime-best-pagination";
+import Pagination from "../../common/pagination";
 import RealtimeBestSearchForm from "./realtime-best-search-form";
 
 export default function RealtimeBestBottom({
@@ -9,7 +9,7 @@ export default function RealtimeBestBottom({
   return (
     <div className="border-t border-neutral-300 py-2">
       <RealtimeBestSearchForm />
-      <RealtimeBestPagination totalPages={totalPages} />
+      <Pagination totalPages={totalPages} />
     </div>
   );
 }

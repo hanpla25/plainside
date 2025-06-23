@@ -130,14 +130,21 @@ export async function getUserData(user: UserPayload): Promise<UserData | null> {
   return data;
 }
 
-export async function getUsersPostsData(user: UserPayload) {
+export async function getUsersPostsData(
+  user: UserPayload,
+  page: number,
+  ITEM_PER_PAGE: number
+) {
   const supabase = await createClient();
+  const from = (page - 1) * ITEM_PER_PAGE;
+  const to = from + ITEM_PER_PAGE - 1;
 
   const { data, error } = await supabase
     .from("posts")
     .select("*")
     .eq("user_name", user.user_name)
-    .order("id", { ascending: false });
+    .order("id", { ascending: false })
+    .range(from, to);
 
   if (error) {
     console.log(error);
@@ -147,14 +154,21 @@ export async function getUsersPostsData(user: UserPayload) {
   return data;
 }
 
-export async function getUsersCommentsData(user: UserPayload) {
+export async function getUsersCommentsData(
+  user: UserPayload,
+  page: number,
+  ITEM_PER_PAGE: number
+) {
   const supabase = await createClient();
+  const from = (page - 1) * ITEM_PER_PAGE;
+  const to = from + ITEM_PER_PAGE - 1;
 
   const { data, error } = await supabase
     .from("comments")
     .select("*")
     .eq("user_name", user.user_name)
-    .order("id", { ascending: false });
+    .order("id", { ascending: false })
+    .range(from, to);
 
   if (error) {
     console.log(error);

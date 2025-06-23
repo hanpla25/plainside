@@ -10,7 +10,7 @@ export default function PostList({ comments }: { comments: Comment[] }) {
     );
   }
   return (
-    <div className="border-b-2 border-neutral-400 divide-y divide-neutral-200">
+    <div className=" divide-y divide-neutral-200">
       {comments.map((item) => (
         <CommentItem key={item.id} {...item} />
       ))}

@@ -10,7 +10,7 @@ export default function PostList({ posts }: { posts: Post[] }) {
     );
   }
   return (
-    <div className="border-b-2 border-neutral-400 divide-y divide-neutral-200">
+    <div className="divide-y divide-neutral-200">
       {posts.map((item) => (
         <PostItem key={item.id} {...item} />
       ))}
