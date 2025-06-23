@@ -48,7 +48,7 @@ export async function fetchGallName(abbr: string): Promise<string> {
   return data.gall_name;
 }
 
-const ITEM_PER_PAGE = 20;
+const ITEM_PER_PAGE = 1;
 export async function fetchPosts({
   page = 1,
   search,
@@ -125,6 +125,40 @@ export async function getUserData(user: UserPayload): Promise<UserData | null> {
   if (error) {
     console.error(error);
     return null;
+  }
+
+  return data;
+}
+
+export async function getUsersPostsData(user: UserPayload) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("user_name", user.user_name)
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return data;
+}
+
+export async function getUsersCommentsData(user: UserPayload) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("user_name", user.user_name)
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.log(error);
+    return [];
   }
 
   return data;

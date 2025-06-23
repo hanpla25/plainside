@@ -25,7 +25,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   let user = null;
-  let latestGalleryData: Gallery[] = [];
+  let popularGalleryData: Gallery[] = [];
 
   try {
     const result = await Promise.all([
@@ -33,7 +33,7 @@ export default async function RootLayout({
       fetchGalleries({ option: "popular" }),
     ]);
     user = result[0];
-    latestGalleryData = result[1];
+    popularGalleryData = result[1];
   } catch (error) {
     console.error("RootLayout fetch 실패:", error);
   }
@@ -44,8 +44,8 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900 max-w-6xl mx-auto`}
       >
         <div className="min-h-[100vh]">
-          <Header galleryData={latestGalleryData} user={user} />
-          <RecentGall galleryData={latestGalleryData} />
+          <Header galleryData={popularGalleryData} user={user} />
+          <RecentGall galleryData={popularGalleryData} />
           {children}
         </div>
       </body>

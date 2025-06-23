@@ -14,16 +14,32 @@ export type RecentGall = {
 
 export type Post = {
   id: number;
-  nickname: string;
-  abbr: string;
-  gall_name: string;
+  user_id: string;
+  user_name: string;
   title: string;
   content: string;
+  abbr: string;
+  gall_name: string;
   view_count: string;
   like_count: number;
   dislike_count: number;
   comment_count: number;
+  password: number;
   ip_address?: string;
+  created_at: string;
+};
+
+export type Comment = {
+  id: number;
+  post_id: string;
+  user_id: string;
+  user_name: string;
+  abbr: string;
+  gall_name: string;
+  content: string;
+  password: number;
+  ip_address?: string;
+  is_reply: boolean;
   created_at: string;
 };
 

@@ -1,21 +1,24 @@
 import { logout } from "@/app/lib/actions";
-import { AlignJustify, Search } from "lucide-react";
+import { AlignJustify, X, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SetStateAction } from "react";
 
 const buttonStyle =
   "text-neutral-900 p-1 rounded-md text-[14px] border border-neutral-900 hidden lg:block coursor-pointer";
 
 export function MobileMenuButton({
+  isOpenMenu,
   setIsOpenMenu,
 }: {
-  setIsOpenMenu: React.Dispatch<SetStateAction<boolean>>;
+  isOpenMenu: boolean;
+  setIsOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const Icon = isOpenMenu ? X : AlignJustify;
+
   return (
-    <AlignJustify
+    <Icon
       onClick={() => setIsOpenMenu((prev) => !prev)}
-      className="lg:hidden"
+      className="lg:hidden cursor-pointer"
     />
   );
 }
@@ -70,7 +73,10 @@ export function SignupButton() {
 export function LogOutButton() {
   return (
     <form action={logout}>
-      <button type="submit" className={`${buttonStyle} hidden lg:block`}>
+      <button
+        type="submit"
+        className={`${buttonStyle} hidden lg:block cursor-pointer`}
+      >
         로그아웃
       </button>
     </form>

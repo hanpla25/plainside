@@ -10,7 +10,7 @@ export default function RecentGallList({ recentGall, onRemove }: Props) {
   if (recentGall.length === 0) {
     return (
       <div className="border border-neutral-300 text-center p-5">
-        <span>최근 방문 갤러가 없습니다.</span>
+        <span>최근 방문 갤러리가 없습니다.</span>
       </div>
     );
   }

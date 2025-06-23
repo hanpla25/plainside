@@ -1,6 +1,6 @@
 export function formatDateTime(
   dateInput: string,
-  type: "time" | "full" | "monthTime" | "relative"
+  type: "time" | "full" | "monthTime" | "yearMonthDate" | "relative"
 ): string {
   const date = new Date(dateInput);
   const now = new Date();
@@ -9,6 +9,9 @@ export function formatDateTime(
 
   const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
   const dayMonth = `${pad(date.getMonth() + 1)}.${pad(date.getDate())}`;
+  const yearMonthDate = `${date.getFullYear()}.${pad(
+    date.getMonth() + 1
+  )}.${pad(date.getDate())}`;
   const full = `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(
     date.getDate()
   )} ${time}`;
@@ -24,6 +27,10 @@ export function formatDateTime(
 
   if (type === "monthTime") {
     return `${dayMonth} ${time}`;
+  }
+
+  if (type === "yearMonthDate") {
+    return `${yearMonthDate}`;
   }
 
   if (type === "full") return full;

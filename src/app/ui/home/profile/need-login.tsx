@@ -7,12 +7,10 @@ export default function NeedLogin() {
   const pathname: string = usePathname();
 
   return (
-    <div className="border border-neutral-400">
-      <div className="p-2">
-        <Link href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}>
-          로그인해 주세요.
-        </Link>
-      </div>
+    <div className="">
+      <Link href={`/login?callbackUrl=${encodeURIComponent(pathname)}`}>
+        로그인해 주세요.
+      </Link>
     </div>
   );
 }

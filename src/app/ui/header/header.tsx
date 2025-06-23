@@ -16,6 +16,7 @@ import Menu from "./menu";
 import SearchModal from "./search-modal";
 import { Gallery, UserPayload } from "@/app/lib/definition";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Header({
   galleryData,
@@ -42,9 +43,18 @@ export default function Header({
         <div>
           <Logo />
         </div>
-        <div className="flex lg:gap-2">
+        <div className="flex lg:gap-2 items-center gap-2">
+          <Link
+            href={"/profile"}
+            className="text-xs lg:hidden ml-2 lg:gap-0 font-bold"
+          >
+            {user?.user_name}
+          </Link>
           <SearchButton setIsShowSearchForm={setIsShowSearchForm} />
-          <MobileMenuButton setIsOpenMenu={setIsOpenMenu} />
+          <MobileMenuButton
+            isOpenMenu={isOpenMenu}
+            setIsOpenMenu={setIsOpenMenu}
+          />
           <CateogryButton />
           {user ? (
             <>

@@ -14,8 +14,8 @@ type Props = {
 export default function RealtimeBest({ realtimeBestData }: Props) {
   return (
     <div>
-      <h1 className="p-2 text-sm font-extrabold mt-2">
-        <Link href={"/gallery/realtimebest"}>실시간 베스트</Link>
+      <h1 className="p-2 text-lg font-bold mt-2">
+        <span className="text-lg font-bold">실시간 베스트</span>
       </h1>
       <RealtimeBestList realtimeBestData={realtimeBestData} />
       <RealtimeBestBottom totalPages={realtimeBestData.totalPages} />

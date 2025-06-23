@@ -12,7 +12,7 @@ export default function Profile({ userData }: Props) {
         <div className="flex justify-between items-center">
           <Link href={"/profile"}>
             <span className="text-neutral-900 font-semibold">
-              {userData.user_name}님
+              {userData.user_name} 님
             </span>
           </Link>
         </div>

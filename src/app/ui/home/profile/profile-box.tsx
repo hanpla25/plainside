@@ -8,7 +8,7 @@ type Props = {
 
 export default function ProfileBox({ userData }: Props) {
   return (
-    <div className="w-full">
+    <div className="w-full border border-neutral-400 p-2">
       {userData ? <Profile userData={userData} /> : <NeedLogin />}
     </div>
   );
