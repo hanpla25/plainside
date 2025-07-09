@@ -1,23 +1,10 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import type { RecentGall } from "@/app/lib/definition";
+import { RecentGall } from "../lib/definitions";
 
 const STORAGE_KEY = "recent-gall";
-const MAX_RECENT_GALL = 10;
+const MAX_RECENT = 6;
 
-const isRecentGall = (maybe: unknown): maybe is RecentGall => {
-  if (typeof maybe !== "object" || maybe === null) return false;
-
-  const obj = maybe as Record<string, unknown>;
-  return (
-    typeof obj.abbr === "string" &&
-    typeof obj.name === "string" &&
-    typeof obj.href === "string"
-  );
-};
-
-export function useRecentGall() {
+export default function useRecentGall() {
   const [recentGall, setRecentGall] = useState<RecentGall[]>([]);
 
   useEffect(() => {
@@ -26,31 +13,51 @@ export function useRecentGall() {
 
     try {
       const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) {
-        const valid = parsed.filter(isRecentGall);
-        setRecentGall(valid);
+      if (isValid(parsed)) {
+        setRecentGall(parsed);
+      } else {
+        console.warn("유효하지 않은 최근 방문 데이터:", parsed);
+        localStorage.removeItem(STORAGE_KEY);
       }
-    } catch (err) {
-      console.error("최근 갤러리 파싱 실패:", err);
+    } catch (error) {
+      console.error("로컬스토리지 파싱 실패:", error);
+      localStorage.removeItem(STORAGE_KEY);
     }
   }, []);
 
-  const addRecentGall = (newItem: RecentGall) => {
+  function addRecentGall(newGall: RecentGall) {
     setRecentGall((prev) => {
-      const filtered = prev.filter((item) => item.abbr !== newItem.abbr);
-      const updated = [newItem, ...filtered].slice(0, MAX_RECENT_GALL);
+      const filtered = prev.filter((g) => g.abbr !== newGall.abbr);
+      const updated = [newGall, ...filtered].slice(0, MAX_RECENT);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       return updated;
     });
-  };
+  }
 
-  const removeRecentGall = (abbr: string) => {
+  function removeRecentGall(abbr: string) {
     setRecentGall((prev) => {
-      const updated = prev.filter((item) => item.abbr !== abbr);
+      const updated = prev.filter((gall) => gall.abbr !== abbr);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       return updated;
     });
-  };
+  }
 
-  return { recentGall, addRecentGall, removeRecentGall };
+  function clearAll() {
+    localStorage.removeItem(STORAGE_KEY);
+    setRecentGall([]);
+  }
+
+  return { recentGall, addRecentGall, removeRecentGall, clearAll };
+}
+
+function isValid(data: unknown): data is RecentGall[] {
+  if (!Array.isArray(data)) return false;
+
+  return data.every((item) => {
+    if (typeof item === "object" && item !== null) {
+      const obj = item as Record<string, unknown>;
+      return typeof obj.abbr === "string" && typeof obj.name === "string";
+    }
+    return false;
+  });
 }

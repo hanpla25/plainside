@@ -1,9 +1,17 @@
-import SignupForm from "@/app/ui/singup/singup-form";
+import { getUserFromToken } from "@/app/lib/data";
+import AuthHeader from "@/app/ui/auth/header";
+import SignupForm from "@/app/ui/auth/SignupForm";
+import { redirect } from "next/navigation";
 
-export default function SignPage() {
+export default async function SignupPage() {
+  const user = await getUserFromToken();
+  const isLogin = !!user;
+
+  if (isLogin) redirect("/");
+
   return (
-    <div className="p-10 lg:p-2">
-      <h1 className="text-2xl font-bold">회원가입</h1>
+    <div>
+      <AuthHeader label="회원가입" />
       <SignupForm />
     </div>
   );

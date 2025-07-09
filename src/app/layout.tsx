@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./ui/header/header";
-import { fetchGalleries, getUserFromToken } from "./lib/data";
-import RecentGall from "./ui/recent-gall/recent-gall";
-import { Gallery } from "./lib/definition";
+import Header from "./ui/header";
+import RecentGall from "./ui/recent-gall";
+import { getLayoutData } from "./lib/layout-data";
+import RightItems from "./ui/right-items";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,29 +24,24 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  let user = null;
-  let popularGalleryData: Gallery[] = [];
-
-  try {
-    const result = await Promise.all([
-      getUserFromToken(),
-      fetchGalleries({ option: "popular" }),
-    ]);
-    user = result[0];
-    popularGalleryData = result[1];
-  } catch (error) {
-    console.error("RootLayout fetch 실패:", error);
-  }
+  const { user, gallList, popularGallList, gallMeta } = await getLayoutData();
+  const isLogin = !!user;
 
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900 max-w-6xl mx-auto`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900 max-w-5xl mx-auto`}
       >
-        <div className="min-h-[100vh]">
-          <Header galleryData={popularGalleryData} user={user} />
-          <RecentGall galleryData={popularGalleryData} />
-          {children}
+        <Header isLogin={isLogin} gallList={gallList} />
+        <RecentGall gallList={gallMeta} />
+        <div className="lg:flex gap-8">
+          <div className="lg:basis-3/4">{children}</div>
+          <RightItems
+            user={user}
+            gallList={gallList}
+            popularGallData={popularGallList}
+            isLogin={isLogin}
+          />
         </div>
       </body>
     </html>
