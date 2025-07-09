@@ -2,7 +2,7 @@
 
 import Logo from "./Logo";
 import MobileMenu from "./MobileMenu";
-import { Gall, UserPayload } from "@/app/lib/definitions";
+import { Gall } from "@/app/lib/definitions";
 import SearchModal from "./modal";
 import HeaderButtons from "./HeaderButtons";
 import useHeaderState from "@/app/hooks/useHeaderState";

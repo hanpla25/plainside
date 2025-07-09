@@ -10,6 +10,7 @@ import {
 } from "./definitions";
 import jwt from "jsonwebtoken";
 import { createClient } from "../utils/supabase/server";
+import { redirect } from "next/navigation";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -75,6 +76,23 @@ export async function fetchGallList({
   }
 
   return data ?? [];
+}
+
+export async function fetchGallName(abbr: string): Promise<string> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("galleries")
+    .select("gall_name")
+    .eq("abbr", abbr)
+    .single();
+
+  if (error) {
+    console.error("갤러리 이름 가져오기 에러", error);
+    redirect("/");
+  }
+
+  return data.gall_name;
 }
 
 export async function fetchPostData({
