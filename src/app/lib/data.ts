@@ -171,21 +171,29 @@ export async function fetchCommentsData({
   return { data: data ?? [], count: count ?? 0, totalPages: totalPages || 1 };
 }
 
-export async function getProfileData(user: UserPayload, currentPage?: number) {
+export async function getProfileData({
+  user,
+  currentPage,
+  item_per_page = 5,
+}: {
+  user: UserPayload;
+  currentPage?: number;
+  item_per_page?: number;
+}) {
   let posts: UserPostData = { data: [], count: 0, totalPages: 1 };
   let comments: UserCommentsData = { data: [], count: 0, totalPages: 1 };
 
   try {
     const [userPosts, userComments] = await Promise.all([
       fetchPostData({
-        item_per_page: 10,
+        item_per_page: item_per_page,
         user_id: user.user_id,
-        page: Number(currentPage),
+        page: Number(currentPage) || 1,
       }),
       fetchCommentsData({
-        item_per_page: 10,
+        item_per_page: item_per_page,
         user_id: user.user_id,
-        page: Number(currentPage),
+        page: Number(currentPage) || 1,
       }),
     ]);
     posts = userPosts;
