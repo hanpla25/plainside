@@ -17,10 +17,11 @@ export default function ProfileBox({ userData }: Props) {
       </div>
       <div className="flex items-center space-x-4 text-xs mt-3">
         <span>
-          글 <Link href="/profile/posting">{userData.write_count}</Link>
+          글 <Link href="/profile?menu=posts">{userData.write_count}</Link>
         </span>
         <span>
-          댓글 <Link href="/profile/comment">{userData.comment_count}</Link>
+          댓글
+          <Link href="/profile?menu=comments">{userData.comment_count}</Link>
         </span>
       </div>
     </div>
