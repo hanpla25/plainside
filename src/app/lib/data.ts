@@ -1,18 +1,14 @@
 import { cookies } from "next/headers";
-import {
-  Comment,
-  Gall,
-  Post,
-  UserCommentsData,
-  UserData,
-  UserPayload,
-  UserPostData,
-} from "./definitions";
+import { Gall, Post, UserData, UserPayload } from "./definitions";
 import jwt from "jsonwebtoken";
 import { createClient } from "../utils/supabase/server";
 import { redirect } from "next/navigation";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+const jwtSecret = process.env.JWT_SECRET;
+if (!jwtSecret) {
+  throw new Error("JWT_SECRET 환경 변수 없음");
+}
+const JWT_SECRET: string = jwtSecret;
 
 export async function getUserFromToken(): Promise<UserPayload | null> {
   const cookieStore = await cookies();
@@ -21,51 +17,66 @@ export async function getUserFromToken(): Promise<UserPayload | null> {
   if (!token) return null;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as UserPayload;
+    const decoded = jwt.verify(token, JWT_SECRET);
 
-    return {
-      user_id: decoded.user_id,
-      user_name: decoded.user_name,
-      created_at: decoded.created_at,
-    };
+    if (
+      typeof decoded === "object" &&
+      "user_id" in decoded &&
+      "user_name" in decoded &&
+      "created_at" in decoded
+    ) {
+      const { user_id, user_name, created_at } = decoded as UserPayload;
+      return { user_id, user_name, created_at };
+    }
+
+    return null;
   } catch (err) {
     console.warn("JWT decode 실패", err);
+    cookieStore.delete("auth_token");
     return null;
   }
 }
 
-export async function getUserData(user: UserPayload): Promise<UserData | null> {
+export async function getUserData(user: UserPayload): Promise<UserData> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("users")
     .select("*")
-    .eq("user_id", user.user_id)
+    .eq("id", user.user_id)
     .single();
 
   if (error) {
     console.error(error);
-    return null;
+    redirect("/");
   }
 
   return data;
 }
 
-export async function fetchGallList({
-  sort,
-  limit = 10,
+export async function fetchGallData({
+  sort = "newest",
+  size,
 }: {
-  sort: string;
-  limit?: number;
+  sort: "newest" | "popular";
+  size?: number;
 }): Promise<Gall[]> {
   const supabase = await createClient();
 
-  let query = supabase.from("galleries").select("*").limit(limit);
+  const sortColumns = {
+    newest: "id",
+    popular: "today_post_count",
+  } as const;
 
-  if (sort === "newest") {
-    query = query.order("id", { ascending: false });
-  } else {
-    query = query.order("today_post_count", { ascending: false });
+  const sortColumn = sortColumns[sort];
+
+  let query = supabase
+    .from("galleries")
+    .select("*")
+    .order(sortColumn, { ascending: false });
+
+  if (size !== undefined) {
+    query = query.limit(size);
   }
 
   const { data, error } = await query;
@@ -83,7 +94,7 @@ export async function fetchGallName(abbr: string): Promise<string> {
 
   const { data, error } = await supabase
     .from("galleries")
-    .select("gall_name")
+    .select("name")
     .eq("abbr", abbr)
     .single();
 
@@ -92,7 +103,7 @@ export async function fetchGallName(abbr: string): Promise<string> {
     redirect("/");
   }
 
-  return data.gall_name;
+  return data.name;
 }
 
 export async function fetchPostData({
@@ -146,79 +157,4 @@ export async function fetchPostData({
   }
 
   return { data: data ?? [], count: count ?? 0, totalPages: totalPages || 1 };
-}
-
-export async function fetchCommentsData({
-  item_per_page = 10,
-  page = 1,
-  abbr,
-  user_id,
-}: {
-  item_per_page?: number;
-  page?: number;
-  abbr?: string;
-  user_id?: string;
-} = {}): Promise<{ data: Comment[]; count: number; totalPages: number }> {
-  const supabase = await createClient();
-
-  const from = (page - 1) * item_per_page;
-  const to = from + item_per_page - 1;
-
-  let query = supabase
-    .from("comments")
-    .select("*", { count: "exact" })
-    .order("id", { ascending: false })
-    .range(from, to);
-
-  if (abbr) {
-    query = query.eq("abbr", abbr);
-  }
-
-  if (user_id) {
-    query = query.eq("user_id", user_id);
-  }
-
-  const { data, count, error } = await query;
-
-  const totalPages = Math.ceil(Number(count) / item_per_page);
-
-  if (error) {
-    console.error("패치 포스트 에러:", error);
-    return { data: [], count: 0, totalPages: 1 };
-  }
-  return { data: data ?? [], count: count ?? 0, totalPages: totalPages || 1 };
-}
-
-export async function getProfileData({
-  user,
-  currentPage,
-  item_per_page = 5,
-}: {
-  user: UserPayload;
-  currentPage?: number;
-  item_per_page?: number;
-}) {
-  let posts: UserPostData = { data: [], count: 0, totalPages: 1 };
-  let comments: UserCommentsData = { data: [], count: 0, totalPages: 1 };
-
-  try {
-    const [userPosts, userComments] = await Promise.all([
-      fetchPostData({
-        item_per_page: item_per_page,
-        user_id: user.user_id,
-        page: Number(currentPage) || 1,
-      }),
-      fetchCommentsData({
-        item_per_page: item_per_page,
-        user_id: user.user_id,
-        page: Number(currentPage) || 1,
-      }),
-    ]);
-    posts = userPosts;
-    comments = userComments;
-  } catch (error) {
-    console.error(error);
-  }
-
-  return { posts, comments };
 }

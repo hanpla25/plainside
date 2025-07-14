@@ -7,9 +7,14 @@ export type UserPayload = {
 export type Gall = {
   id: number;
   abbr: string;
-  gall_name: string;
+  name: string;
   creator_name: string;
   created_at: string;
+};
+
+export type GallMeta = {
+  abbr: string;
+  name: string;
 };
 
 export type RecentGall = {
@@ -66,8 +71,8 @@ export type AuthFormState = {
 };
 
 export type UserData = {
-  user_id: string;
-  user_name: string;
+  id: string;
+  name: string;
   write_count: number;
   comment_count: number;
   created_at: string;

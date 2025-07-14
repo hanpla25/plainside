@@ -1,16 +1,16 @@
-import { Gall } from "@/app/lib/definitions";
-import PopularGallHeader from "./PopularGallHeader";
-import PopularGallList from "./PopularGallList";
+import GallList from "../common/GallList";
+import HeaderText from "../common/HeaderText";
+import { GallMeta } from "@/app/lib/definitions";
 
 type Props = {
-  popularGallData: Gall[];
+  popularGallData: GallMeta[];
 };
 
-export default function PopularGall({ popularGallData }: Props) {
+export default async function PopularGall({ popularGallData }: Props) {
   return (
-    <div className="lg:hidden px-2 py-2">
-      <PopularGallHeader />
-      <PopularGallList popularGallData={popularGallData} />
+    <div className="lg:hidden py-2">
+      <HeaderText label="인기 갤러리" href="#" />
+      <GallList gallData={popularGallData} />
     </div>
   );
 }

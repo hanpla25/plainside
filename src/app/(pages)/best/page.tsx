@@ -1,18 +1,18 @@
-import { getHomeData } from "../lib/home-data";
-import PopularGall from "../ui/popular-gall";
-import RealtimeBest from "../ui/realtime-best";
+import { getHomeData } from "@/app/lib/home-data";
+import RealtimeBest from "@/app/ui/realtime-best";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function HomePage(props: { searchParams: SearchParams }) {
+export default async function BestGallPage(props: {
+  searchParams: SearchParams;
+}) {
   const searchParams = await props.searchParams;
   const { search = "", option = "title", page = "1" } = searchParams;
 
-  const { popularGallMeta, popularPostData } = await getHomeData(searchParams);
+  const { popularPostData } = await getHomeData(searchParams);
 
   return (
     <>
-      <PopularGall popularGallData={popularGallMeta} />
       <RealtimeBest
         popularPostData={popularPostData}
         search={search as string}

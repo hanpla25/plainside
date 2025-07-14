@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./ui/header";
-import RecentGall from "./ui/recent-gall";
+import Header from "./ui/layout/header";
 import { getLayoutData } from "./lib/layout-data";
-import RightItems from "./ui/right-items";
+import RecentGall from "./ui/layout/recent-gall";
+import RightItems from "./ui/layout/right-items";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,24 +24,25 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { user, gallList, popularGallList, gallMeta } = await getLayoutData();
-  const isLogin = !!user;
+  const { user, gallMeta, newestGallMeta, popularGallMeta } =
+    await getLayoutData();
 
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900 max-w-5xl mx-auto`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-800 max-w-5xl mx-auto`}
       >
-        <Header isLogin={isLogin} gallList={gallList} />
+        <Header user={user} gallList={gallMeta} />
         <RecentGall gallList={gallMeta} />
         <div className="lg:flex gap-8">
           <div className="lg:basis-3/4">{children}</div>
-          <RightItems
-            user={user}
-            gallList={gallList}
-            popularGallData={popularGallList}
-            isLogin={isLogin}
-          />
+          <div className="lg:basis-1/4 hidden lg:flex flex-col gap-16">
+            <RightItems
+              user={user}
+              popularGallData={popularGallMeta}
+              newestGallData={newestGallMeta}
+            />
+          </div>
         </div>
       </body>
     </html>

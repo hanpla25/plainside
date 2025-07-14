@@ -1,16 +1,4 @@
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
-
-export function SignupLink() {
-  return (
-    <Link
-      href={"/signup"}
-      className="block text-center cursor-pointer border-2 border-neutral-400 rounded-md py-[6px]"
-    >
-      회원가입
-    </Link>
-  );
-}
 
 export function SubmitButton({
   label,
