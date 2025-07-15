@@ -81,3 +81,9 @@ export async function signIn(
 
   redirect(callbackUrl || "/");
 }
+
+export async function signOut() {
+  const cookieStore = await cookies();
+  
+  cookieStore.delete("token");
+}

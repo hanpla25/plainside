@@ -1,5 +1,7 @@
+import { signOut } from "@/app/lib/actions";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogoutForm } from "./buttons";
 
 const itemStyle = "hover:bg-neutral-100 p-1 pl-2";
 
@@ -46,11 +48,7 @@ function LoginItems() {
   return (
     <>
       <Item href="/profile" label="프로필" />
-      <form className={itemStyle}>
-        <button type="submit" className="w-full text-left">
-          로그아웃
-        </button>
-      </form>
+      <LogoutForm className={itemStyle} buttonClassName="w-full text-left" />
     </>
   );
 }

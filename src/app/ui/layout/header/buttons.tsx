@@ -1,3 +1,4 @@
+import { signOut } from "@/app/lib/actions";
 import { AlignJustify, Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -42,14 +43,32 @@ export function LoginLinkButton() {
   return <NavLinkButton href={href}>로그인</NavLinkButton>;
 }
 
-export function LogOutButton() {
+type LogoutFormProps = {
+  className?: string;
+  buttonClassName?: string;
+};
+
+export function LogoutForm({
+  className = "",
+  buttonClassName = "",
+}: LogoutFormProps) {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!confirm("로그아웃 할까요?")) {
+      e.preventDefault();
+    }
+  };
+
   return (
-    <form>
-      <button type="submit" className={`${buttonStyle}`}>
+    <form action={signOut} onSubmit={handleSubmit} className={className}>
+      <button type="submit" className={buttonClassName}>
         로그아웃
       </button>
     </form>
   );
+}
+
+export function LogOutButton() {
+  return <LogoutForm buttonClassName={buttonStyle} />;
 }
 
 export function SignupLinkButton() {

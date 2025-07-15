@@ -20,7 +20,7 @@ export default function Header({ user, gallList }: Props) {
   useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchOpen(false);
-  }, [pathname]);
+  }, [pathname, isLogin]);
 
   return (
     <>
