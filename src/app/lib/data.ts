@@ -12,7 +12,7 @@ const JWT_SECRET: string = jwtSecret;
 
 export async function getUserFromToken(): Promise<UserPayload | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("auth_token")?.value;
+  const token = cookieStore.get("token")?.value;
 
   if (!token) return null;
 
@@ -22,8 +22,7 @@ export async function getUserFromToken(): Promise<UserPayload | null> {
     if (
       typeof decoded === "object" &&
       "user_id" in decoded &&
-      "user_name" in decoded &&
-      "created_at" in decoded
+      "user_name" in decoded
     ) {
       const { user_id, user_name, created_at } = decoded as UserPayload;
       return { user_id, user_name, created_at };
@@ -32,7 +31,7 @@ export async function getUserFromToken(): Promise<UserPayload | null> {
     return null;
   } catch (err) {
     console.warn("JWT decode 실패", err);
-    cookieStore.delete("auth_token");
+    cookieStore.delete("token");
     return null;
   }
 }

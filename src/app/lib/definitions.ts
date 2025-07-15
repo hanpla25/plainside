@@ -56,20 +56,6 @@ export type Comment = {
   created_at: string;
 };
 
-export type AuthFormData = {
-  name?: string;
-  id: string;
-  password: string;
-};
-
-export type AuthFormState = {
-  msg?: string;
-  inputs?: Partial<AuthFormData>;
-  errors?: {
-    [K in keyof AuthFormData]?: string[];
-  };
-};
-
 export type UserData = {
   id: string;
   name: string;

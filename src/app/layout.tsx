@@ -34,9 +34,9 @@ export default async function RootLayout({
       >
         <Header user={user} gallList={gallMeta} />
         <RecentGall gallList={gallMeta} />
-        <div className="lg:flex gap-8">
+        <div className="lg:flex gap-8 mb-30">
           <div className="lg:basis-3/4">{children}</div>
-          <div className="lg:basis-1/4 hidden lg:flex flex-col gap-16">
+          <div className="lg:basis-1/4 hidden lg:flex flex-col gap-16 px-4">
             <RightItems
               user={user}
               popularGallData={popularGallMeta}
