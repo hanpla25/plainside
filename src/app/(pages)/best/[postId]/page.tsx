@@ -1,9 +1,22 @@
+import { fetchPostData } from "@/app/lib/data";
 import HeaderText from "@/app/ui/common/HeaderText";
+import PostList from "@/app/ui/common/PostList";
+import Post from "@/app/ui/post";
+import { redirect } from "next/navigation";
 
-export default function BestPostPage() {
+type Params = Promise<{ postId: string }>;
+
+export default async function BestPostPage(props: { params: Params }) {
+  const params = await props.params;
+  const postId = Number(params.postId);
+  const postData = await fetchPostData(postId);
+
+  if (!postData) redirect("/best");
+
   return (
     <>
       <HeaderText label="실시간 베스트" href="/best" />
+      <Post postData={postData} />
     </>
   );
 }

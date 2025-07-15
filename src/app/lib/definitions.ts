@@ -30,7 +30,7 @@ export type Post = {
   content: string;
   abbr: string;
   gall_name: string;
-  view_count: string;
+  view_count: number;
   like_count: number;
   dislike_count: number;
   comment_count: number;

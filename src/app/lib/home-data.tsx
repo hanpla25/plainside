@@ -1,4 +1,4 @@
-import { fetchGallData, fetchPostData } from "./data";
+import { fetchGallData, fetchPostListData } from "./data";
 
 export async function getHomeData(searchParams: {
   search?: string | string[];
@@ -9,7 +9,7 @@ export async function getHomeData(searchParams: {
 
   const [popularGallData, popularPostData] = await Promise.all([
     fetchGallData({ sort: "popular" }),
-    fetchPostData({
+    fetchPostListData({
       item_per_page: 10,
       page: Number(page),
       search: search as string,

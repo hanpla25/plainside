@@ -1,6 +1,6 @@
 export default function formatDate(
   dateString: string,
-  type: "time" | "YMD" | "relative"
+  type: "time" | "YMD" | "relative" | "YMDT"
 ): string {
   const date = new Date(dateString);
   const now = new Date();
@@ -23,6 +23,10 @@ export default function formatDate(
 
   if (type === "YMD") {
     return `${yearMonthDay}`;
+  }
+
+  if (type === "YMDT") {
+    return `${yearMonthDay} ${time}`;
   }
 
   if (type === "relative") {

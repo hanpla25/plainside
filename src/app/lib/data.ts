@@ -109,7 +109,7 @@ export async function fetchGallName(abbr: string): Promise<string> {
   return data.name;
 }
 
-export async function fetchPostData({
+export async function fetchPostListData({
   item_per_page = 10,
   page = 1,
   search,
@@ -160,4 +160,21 @@ export async function fetchPostData({
   }
 
   return { data: data ?? [], count: count ?? 0, totalPages: totalPages || 1 };
+}
+
+export async function fetchPostData(postId: number): Promise<Post | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", postId)
+    .single();
+
+  if (error) {
+    console.error("게시글 데이터를 불러오는 중 오류 발생:", error.message);
+    return null;
+  }
+
+  return data;
 }
