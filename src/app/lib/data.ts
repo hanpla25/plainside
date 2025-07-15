@@ -54,25 +54,29 @@ export async function getUserData(user: UserPayload): Promise<UserData> {
 }
 
 export async function fetchGallData({
-  sort = "newest",
+  sort,
   size,
 }: {
-  sort: "newest" | "popular";
+  sort: "name" | "newest" | "popular";
   size?: number;
 }): Promise<Gall[]> {
   const supabase = await createClient();
 
   const sortColumns = {
+    name: "name",
     newest: "id",
     popular: "today_post_count",
   } as const;
 
   const sortColumn = sortColumns[sort];
 
-  let query = supabase
-    .from("galleries")
-    .select("*")
-    .order(sortColumn, { ascending: false });
+  let query = supabase.from("galleries").select("*");
+
+  if (sort === "name") {
+    query = query.order(sortColumn, { ascending: true });
+  } else {
+    query = query.order(sortColumn, { ascending: false });
+  }
 
   if (size !== undefined) {
     query = query.limit(size);
