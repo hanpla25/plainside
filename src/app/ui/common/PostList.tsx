@@ -4,12 +4,12 @@ import { Tally1 } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
-  PostData: Post[];
+  PostListData: Post[];
   isAbbr?: boolean | undefined;
 };
 
-export default function PostList({ PostData, isAbbr }: Props) {
-  if (!PostData.length) {
+export default function PostList({ PostListData, isAbbr }: Props) {
+  if (!PostListData.length) {
     return (
       <div className="text-center py-10 text-neutral-500">
         게시글이 없습니다.
@@ -19,7 +19,7 @@ export default function PostList({ PostData, isAbbr }: Props) {
 
   return (
     <ul className="divide-y divide-neutral-200 text-sm">
-      {PostData.map((item) => (
+      {PostListData.map((item) => (
         <li
           key={item.id}
           className="lg:px-0 py-3 px-2.5 hover:bg-neutral-100 transition"

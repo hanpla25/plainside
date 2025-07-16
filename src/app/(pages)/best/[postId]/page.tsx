@@ -1,6 +1,5 @@
 import { fetchPostData } from "@/app/lib/data";
 import HeaderText from "@/app/ui/common/HeaderText";
-import PostList from "@/app/ui/common/PostList";
 import Post from "@/app/ui/post";
 import { redirect } from "next/navigation";
 

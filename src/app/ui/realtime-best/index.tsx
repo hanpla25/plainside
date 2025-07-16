@@ -26,7 +26,7 @@ export default function RealtimeBest({
   return (
     <>
       <HeaderText label="실시간 베스트" href="/best" />
-      <PostList PostData={popularPostData.data} />
+      <PostList PostListData={popularPostData.data} />
       <PostSearchForm />
       <Pagination
         currentPage={currentPage}
