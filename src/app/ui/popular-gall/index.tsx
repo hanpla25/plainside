@@ -1,4 +1,4 @@
-import GallList from "../common/GallList";
+import GallList from "../gall/GallList";
 import HeaderText from "../common/HeaderText";
 import { GallMeta } from "@/app/lib/definitions";
 

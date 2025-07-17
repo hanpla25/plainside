@@ -1,17 +1,17 @@
 import { Post } from "@/app/lib/definitions";
 import HeaderText from "../common/HeaderText";
-import PostList from "../common/PostList";
-import PostSearchForm from "../common/PostSearchForm";
+import PostList from "../post/PostList";
+import PostSearchForm from "../post/PostSearchForm";
 import Pagination from "../common/Pagination";
 
-type PopularPostData = {
+type postListData = {
   data: Post[];
   count: number;
   totalPages: number;
 };
 
 type Props = {
-  popularPostData: PopularPostData;
+  popularPostData: postListData;
   currentPage: number;
   search: string;
   option: string;
@@ -29,6 +29,7 @@ export default function RealtimeBest({
       <PostList PostListData={popularPostData.data} />
       <PostSearchForm />
       <Pagination
+        href="/"
         currentPage={currentPage}
         search={search}
         option={option}

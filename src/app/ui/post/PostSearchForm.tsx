@@ -1,10 +1,11 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const style = "border border-neutral-300 rounded-sm outline-none";
 
 export default function PostSearchForm() {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const search = searchParams.get("search") ?? "";
@@ -12,7 +13,11 @@ export default function PostSearchForm() {
 
   return (
     <div className="flex justify-center mt-4">
-      <form className="flex gap-1 w-full max-w-sm" action={"/"} method="get">
+      <form
+        className="flex gap-1 w-full max-w-sm"
+        action={`${pathname}`}
+        method="get"
+      >
         <select
           name="option"
           id="option"

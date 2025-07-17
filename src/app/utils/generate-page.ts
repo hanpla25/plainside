@@ -1,4 +1,7 @@
-export default function (currentPage: number, totalPages: number) {
+export default function generatePagination(
+  currentPage: number,
+  totalPages: number
+) {
   const groupSize = 5;
 
   const currentGroup = Math.floor((currentPage - 1) / groupSize);

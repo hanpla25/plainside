@@ -9,7 +9,6 @@ export default async function HomePage(props: { searchParams: SearchParams }) {
   const { search = "", option = "title", page = "1" } = searchParams;
 
   const { popularGallMeta, popularPostData } = await getHomeData(searchParams);
-  console.log(popularPostData);
 
   return (
     <>

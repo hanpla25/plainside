@@ -1,4 +1,4 @@
-import type { Post as PostType } from "@/app/lib/definitions";
+import type { Post, Post as PostType } from "@/app/lib/definitions";
 import formatDate from "@/app/utils/format-date";
 
 export default function Post({ postData }: { postData: PostType }) {

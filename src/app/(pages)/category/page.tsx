@@ -1,5 +1,5 @@
 import { fetchGallData } from "@/app/lib/data";
-import GallList from "@/app/ui/common/GallList";
+import GallList from "@/app/ui/gall/GallList";
 import HeaderText from "@/app/ui/common/HeaderText";
 
 export default async function CategoryPage() {

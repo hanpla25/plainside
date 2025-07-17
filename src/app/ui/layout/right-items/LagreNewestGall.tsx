@@ -1,6 +1,6 @@
 import { GallMeta } from "@/app/lib/definitions";
 import HeaderText from "../../common/HeaderText";
-import GallList from "../../common/GallList";
+import GallList from "../../gall/GallList";
 
 type Props = {
   newestGallData: GallMeta[];

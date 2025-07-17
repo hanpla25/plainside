@@ -1,4 +1,5 @@
 import { RecentGall } from "@/app/lib/definitions";
+import { Settings } from "lucide-react";
 
 type Props = {
   setIsModify: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,10 +11,11 @@ export default function RecentGallHeader({ setIsModify, recentGall }: Props) {
     <div className="mb-3">
       {recentGall.length !== 0 && (
         <button
-          className="text-xs text-neutral-600 cursor-pointer"
+          className="flex items-center gap-0.5 text-xs text-neutral-600 cursor-pointer"
           onClick={() => setIsModify((prev) => !prev)}
         >
-          수정하기
+          <span>수정</span>
+          <Settings size={14} />
         </button>
       )}
     </div>
