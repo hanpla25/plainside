@@ -3,8 +3,8 @@
 import { useActionState } from "react";
 import AuthInput from "./AuthInput";
 import { SubmitButton } from "./buttons";
-import { signUp } from "@/app/lib/actions";
 import { CircleAlert } from "lucide-react";
+import { signUp } from "@/app/lib/actions/auth-actions";
 
 export default function SignUpForm() {
   const [errorMsg, formAction, isPending] = useActionState(signUp, null);
