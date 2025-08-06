@@ -1,71 +1,67 @@
 "use client";
 
-import {
-  incrementDisLikeCount,
-  incrementLikeCount,
-} from "@/app/lib/actions/post-actions";
-import { useState, useTransition } from "react";
+import { increaseCollumFromPosts } from "@/app/lib/post-actions";
+import { useState } from "react";
 
-export function LikeButton({
+function Button({
+  label,
   postId,
   initialCount,
+  collum,
 }: {
+  label: string;
   postId: number;
   initialCount: number;
+  collum: "like_count" | "dislike_count";
 }) {
-  const [isPending, startTransition] = useTransition();
   const [count, setCount] = useState(initialCount);
+  const [disable, setDisable] = useState(false);
 
-  const handleClick = () => {
-    setCount((prev) => prev + 1);
-    startTransition(async () => {
-      const result = await incrementLikeCount(postId);
-      if (result?.newCount) {
-        setCount(result.newCount);
-      }
+  const handleButtonClick = async () => {
+    const data = await increaseCollumFromPosts({
+      postId: postId,
+      collum: collum,
     });
+
+    setCount(data);
+    setDisable(true);
   };
 
   return (
     <button
-      onClick={handleClick}
-      disabled={isPending}
+      onClick={handleButtonClick}
       className="border bg-neutral-600 text-white rounded-full p-2 space-x-2 cursor-pointer hover:bg-neutral-700"
+      disabled={disable}
     >
-      <span>개추</span>
+      <span>{label}</span>
       <span>{count}</span>
     </button>
   );
 }
 
-export function DisLikeButton({
-  postId,
-  initialCount,
+export default function PostButtons({
+  post_id,
+  like_count,
+  dislike_count,
 }: {
-  postId: number;
-  initialCount: number;
+  like_count: number;
+  dislike_count: number;
+  post_id: number;
 }) {
-  const [isPending, startTransition] = useTransition();
-  const [count, setCount] = useState(initialCount);
-
-  const handleClick = () => {
-    setCount((prev) => prev + 1);
-    startTransition(async () => {
-      const result = await incrementDisLikeCount(postId);
-      if (result?.newCount) {
-        setCount(result.newCount);
-      }
-    });
-  };
-
   return (
-    <button
-      onClick={handleClick}
-      disabled={isPending}
-      className="border text-neutral-600 rounded-full p-2 space-x-2 cursor-pointer hover:bg-neutral-200"
-    >
-      <span>비추</span>
-      <span>{count}</span>
-    </button>
+    <div className="flex items-center justify-center gap-4">
+      <Button
+        label={"개추"}
+        postId={post_id}
+        initialCount={like_count}
+        collum={"like_count"}
+      />
+      <Button
+        label={"비추"}
+        postId={post_id}
+        initialCount={dislike_count}
+        collum={"dislike_count"}
+      />
+    </div>
   );
 }

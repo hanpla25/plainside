@@ -1,54 +1,85 @@
+// --- UI ---
 import {
   CategoryLinkButton,
-  LoginLinkButton,
-  LogOutButton,
   MobileMenuButton,
   ProfileLinkButton,
   SearchButton,
-  SignupLinkButton,
+  SignInLinkButton,
+  SignOutButton,
+  SignUpLinkButton,
 } from "./buttons";
 
 type Props = {
   isLogin: boolean;
-  isMenuOpen: boolean;
-  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSearchOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick: () => void;
 };
+
+function DesktopButtons({
+  isLogin,
+  onClick,
+}: {
+  isLogin: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <div className="hidden lg:flex items-center gap-3">
+      <SearchButton onClick={onClick} />
+      <CategoryLinkButton />
+      {isLogin ? (
+        <>
+          <ProfileLinkButton />
+          <SignOutButton />
+        </>
+      ) : (
+        <>
+          <SignInLinkButton />
+          <SignUpLinkButton />
+        </>
+      )}
+    </div>
+  );
+}
+
+function MobileButtons({
+  isLogin,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen,
+  onClick,
+}: {
+  isLogin: boolean;
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick: () => void;
+}) {
+  return (
+    <div className="lg:hidden flex items-center gap-4">
+      <SearchButton onClick={onClick} />
+      {isLogin ? <ProfileLinkButton /> : <SignInLinkButton />}
+      <MobileMenuButton
+        isMobileMenuOpen={isMobileMenuOpen}
+        onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+      />
+    </div>
+  );
+}
 
 export default function RightButtons({
   isLogin,
-  isMenuOpen,
-  setIsMenuOpen,
-  setIsSearchOpen,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen,
+  onClick,
 }: Props) {
   return (
     <>
-      {/* 모바일 영역 */}
-      <div className="lg:hidden flex items-center gap-3">
-        <SearchButton onClick={() => setIsSearchOpen((prev) => !prev)} />
-        {!isLogin ? <LoginLinkButton /> : <ProfileLinkButton />}
-        <MobileMenuButton
-          isMenuOpen={isMenuOpen}
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-        />
-      </div>
-
-      {/* 데스크탑 영역 */}
-      <div className="hidden lg:flex items-center gap-3">
-        <SearchButton onClick={() => setIsSearchOpen((prev) => !prev)} />
-        <CategoryLinkButton />
-        {!isLogin ? (
-          <>
-            <LoginLinkButton />
-            <SignupLinkButton />
-          </>
-        ) : (
-          <>
-            <ProfileLinkButton />
-            <LogOutButton />
-          </>
-        )}
-      </div>
+      <DesktopButtons isLogin={isLogin} onClick={onClick} />
+      <MobileButtons
+        isLogin={isLogin}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        onClick={onClick}
+      />
     </>
   );
 }

@@ -1,27 +1,27 @@
-// --- Constants ---
+// --- Constatns ---
 import { BEST_ABBR } from "@/app/constants/href-constants";
 
 // --- Data ---
 import { fetchPostListData } from "@/app/lib/gall-data";
 
 // --- UI ---
-import GallHeader from "@/app/ui/gall/GallHeader";
 import GallUi from "@/app/ui/gall/GallUi";
 
 type SearchParams = Promise<{ [key: string]: string }>;
 
-export default async function HomePage(props: { searchParams: SearchParams }) {
+export default async function BestPage(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
-  const { page = "1" } = searchParams;
+  const { search = "", option = "title", page = "1" } = searchParams;
 
   const bestPostListData = await fetchPostListData({
     popular: true,
     page: Number(page),
+    search: search,
+    option: option,
   });
 
   return (
     <>
-      <GallHeader abbr={BEST_ABBR} gallName={"실시간 베스트"} />
       <GallUi
         abbr={BEST_ABBR}
         postListData={bestPostListData}

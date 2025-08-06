@@ -1,42 +1,49 @@
 "use client";
 
-import { GallMeta, UserPayload } from "@/app/lib/definitions";
-import Logo from "./Logo";
-import RightButtons from "./RightButtons";
-import SearchModal from "./modal";
-import MobileMenu from "./MobileMenu";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-type Props = { user: UserPayload | null; gallList: GallMeta[] };
+// --- UI ---
+import Logo from "./Logo";
+import RightButtons from "./RightButtons";
+import MobileMenuWrapper from "./MobileMenuWrapper";
+import SearchModal from "./modal";
 
-export default function Header({ user, gallList }: Props) {
-  const isLogin = !!user;
+type Props = {
+  isLogin: boolean;
+  gallList: {
+    name: string;
+    abbr: string;
+  }[];
+};
+
+export default function Header({ isLogin, gallList }: Props) {
   const pathname = usePathname();
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
-    setIsMenuOpen(false);
+    setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname, isLogin]);
 
   return (
     <>
-      <header className="lg:px-0 flex justify-between items-center p-2 py-3">
+      <header className="lg:px-0 flex justify-between items-center px-2 py-3">
         <Logo />
         <RightButtons
           isLogin={isLogin}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-          setIsSearchOpen={setIsSearchOpen}
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          onClick={() => setIsSearchOpen((prev) => !prev)}
         />
       </header>
-      {isMenuOpen && <MobileMenu isLogin={isLogin} />}
+
+      {isMobileMenuOpen && <MobileMenuWrapper isLogin={false} />}
       {isSearchOpen && (
         <SearchModal
-          onClick={() => setIsSearchOpen(false)}
+          onClick={() => setIsSearchOpen((prev) => !prev)}
           gallList={gallList}
         />
       )}

@@ -1,63 +1,66 @@
 import { useEffect, useState } from "react";
+
+// --- Types ---
 import { GallMeta } from "../lib/definitions";
 
-const STORAGE_KEY = "recent-gall";
-const MAX_RECENT = 6;
+// --- Constants ---
+import { MAX_RECENT, STORAGE_KEY } from "../constants/recent-gall-constants";
+
+const isValidGallMetaArray = (data: unknown): data is GallMeta[] =>
+  Array.isArray(data) &&
+  data.every(
+    (item) =>
+      typeof item === "object" &&
+      item !== null &&
+      typeof item.name === "string" &&
+      typeof item.abbr === "string"
+  );
 
 export default function useRecentGall() {
   const [recentGall, setRecentGall] = useState<GallMeta[]>([]);
 
+  const addRecentGall = (newItem: GallMeta) => {
+    const storedItem = localStorage.getItem(STORAGE_KEY);
+    let list: GallMeta[] = [];
+
+    if (storedItem) {
+      try {
+        const parsed = JSON.parse(storedItem);
+        if (isValidGallMetaArray(parsed)) {
+          list = parsed;
+        }
+      } catch {
+        return;
+      }
+    }
+
+    list = list.filter((item) => item.abbr !== newItem.abbr);
+    list.unshift(newItem);
+    list = list.slice(0, MAX_RECENT);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    setRecentGall(list);
+  };
+
+  const removeRecentGall = (abbr: string) => {
+    const updated = recentGall.filter((item) => item.abbr !== abbr);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    setRecentGall(updated);
+  };
+
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return;
+    const storedItem = localStorage.getItem(STORAGE_KEY);
+    if (!storedItem) return;
 
     try {
-      const parsed = JSON.parse(stored);
-      if (isValid(parsed)) {
+      const parsed = JSON.parse(storedItem);
+      if (isValidGallMetaArray(parsed)) {
         setRecentGall(parsed);
-      } else {
-        console.warn("유효하지 않은 최근 방문 데이터:", parsed);
-        localStorage.removeItem(STORAGE_KEY);
       }
-    } catch (error) {
-      console.error("로컬스토리지 파싱 실패:", error);
-      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      console.warn("유효하지 않은 로컬스토리지 데이터");
     }
   }, []);
 
-  function addRecentGall(newGall: GallMeta) {
-    setRecentGall((prev) => {
-      const filtered = prev.filter((g) => g.abbr !== newGall.abbr);
-      const updated = [newGall, ...filtered].slice(0, MAX_RECENT);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      return updated;
-    });
-  }
-
-  function removeRecentGall(abbr: string) {
-    setRecentGall((prev) => {
-      const updated = prev.filter((gall) => gall.abbr !== abbr);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      return updated;
-    });
-  }
-
-  function clearAll() {
-    localStorage.removeItem(STORAGE_KEY);
-    setRecentGall([]);
-  }
-
-  return { recentGall, addRecentGall, removeRecentGall, clearAll };
-}
-
-function isValid(data: unknown): data is GallMeta[] {
-  if (!Array.isArray(data)) return false;
-
-  return data.every((item) => {
-    if (typeof item === "object" && item !== null) {
-      const obj = item as Record<string, unknown>;
-      return typeof obj.abbr === "string" && typeof obj.name === "string";
-    }
-    return false;
-  });
+  return { recentGall, addRecentGall, removeRecentGall };
 }

@@ -1,102 +1,109 @@
-import generatePagination from "@/app/utils/generate-page";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
+"use client";
+
 import Link from "next/link";
 
-type Props = {
+// --- Utils ---
+import generatePagination from "@/app/utils/generate-pagination";
+
+// --- Icons ---
+import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
+
+function PaginationArrow({
+  href,
+  direction,
+}: {
   href: string;
-  currentPage: number;
-  totalPages: number;
-  option?: string;
-  search?: string;
-  mode?: string;
-};
+  direction: "left" | "right";
+}) {
+  const arrow = direction === "left" ? <ChevronLeft /> : <ChevronRight />;
+
+  return (
+    <Link href={href} className="px-2 md:px-0">
+      {arrow}
+    </Link>
+  );
+}
+
+function PaginationNumber({
+  page,
+  href,
+  isActive,
+}: {
+  page: number | string;
+  href: string;
+  isActive: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`flex items-center justify-center text-sm h-9 ${
+        typeof page === "number" ? "w-full md:w-9" : "w-9"
+      } ${isActive ? "text-white bg-neutral-800 rounded" : "text-neutral-500"}`}
+    >
+      {page}
+    </Link>
+  );
+}
 
 export default function Pagination({
-  href,
   currentPage,
-  totalPages,
-  option,
-  search,
-  mode,
-}: Props) {
-  const { pages, hasPrev, hasNext, prevPage, nextPage } = generatePagination(
-    currentPage,
-    totalPages
-  );
+  totalPage,
+}: {
+  currentPage: number;
+  totalPage: number;
+}) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const makeUrl = (page: number) => {
-    const params = new URLSearchParams();
-    if (mode) params.set("mode", mode);
-    if (option) params.set("option", option);
-    if (search) params.set("search", search);
-    params.set("page", String(page));
-    return `${href}?${params.toString()}`;
+  const pageGroup = generatePagination(currentPage, totalPage);
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
   };
 
   return (
-    <div className="flex items-center flex-col mt-4">
-      <div className="mt-4 flex justify-center gap-1 items-center text-sm">
-        {hasPrev && (
-          <>
-            <Link href={makeUrl(1)}>
-              <ChevronsLeft />
-            </Link>
-            <Link
-              href={makeUrl(prevPage)}
-              className="px-2 py-1 hover:underline"
-            >
-              이전
-            </Link>
-          </>
+    <div className="mt-6 w-full flex flex-col items-center">
+      <div className="w-full md:w-auto flex justify-between md:justify-center items-center gap-0 md:gap-2">
+        {/* 이전 버튼 */}
+        {currentPage > 1 && (
+          <PaginationArrow
+            href={createPageURL(currentPage - 1)}
+            direction="left"
+          />
         )}
 
-        {pages.map((page) => (
-          <Link
-            key={page}
-            href={makeUrl(page)}
-            className={`px-2 py-1 border rounded ${
-              page === currentPage
-                ? "bg-neutral-800 text-white font-bold"
-                : "hover:bg-neutral-200"
-            }`}
-          >
-            {page}
-          </Link>
-        ))}
+        {/* 페이지 그룹 */}
+        <div className="flex w-full md:w-auto justify-between md:space-x-2">
+          {pageGroup.map((page, i) =>
+            page === "..." ? (
+              <div
+                key={i}
+                className="flex items-center justify-center w-full md:w-9 text-neutral-400"
+              >
+                <Ellipsis className="w-4 h-4" />
+              </div>
+            ) : (
+              <PaginationNumber
+                key={`${page}-${i}`}
+                page={page}
+                href={createPageURL(page)}
+                isActive={currentPage === page}
+              />
+            )
+          )}
+        </div>
 
-        {hasNext && (
-          <>
-            <Link
-              href={makeUrl(nextPage)}
-              className="px-2 py-1 hover:underline"
-            >
-              다음
-            </Link>
-            <Link href={makeUrl(totalPages)}>
-              <ChevronsRight />
-            </Link>
-          </>
+        {/* 다음 버튼 */}
+        {currentPage < totalPage && (
+          <PaginationArrow
+            href={createPageURL(currentPage + 1)}
+            direction="right"
+          />
         )}
       </div>
-      <form action={`${href}`} method="get" className="mt-4 space-x-2">
-        {option && <input type="hidden" name="option" value={option} />}
-        {search && <input type="hidden" name="search" value={search} />}
-        {mode && <input type="hidden" name="mode" value={mode} />}
-
-        <label htmlFor="page" className="sr-only">
-          페이지
-        </label>
-        <input
-          id="page"
-          name="page"
-          type="text"
-          className="w-12 h-10 border border-neutral-400 rounded-md p-1 text-center"
-        />
-        <span>/{totalPages}</span>
-        <button className="w-12 h-10 rounded-md border border-neutral-600 bg-neutral-400 text-white cursor-pointer">
-          이동
-        </button>
-      </form>
     </div>
   );
 }

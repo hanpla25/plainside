@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
+// --- Styles ---
 import "./globals.css";
-import getLayoutData from "./lib/data/layout-data";
+import { Geist, Geist_Mono } from "next/font/google";
+
+// --- UI ---
 import Header from "./ui/layout/header";
 import RecentGall from "./ui/layout/recent-gall";
+
+// --- Data ---
+import { fetchGallListNameAbbr } from "./lib/gall-data";
+import { getUserFromToken } from "./lib/user-data";
 import RightItems from "./ui/layout/right-items";
 
 const geistSans = Geist({
@@ -24,25 +31,40 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { user, gallMeta, newestGallMeta, popularGallMeta } =
-    await getLayoutData();
+  const user = await getUserFromToken();
+  const isLogin = user ? true : false;
+
+  const [gallNameList, popularGallNameList, newestGallNameList] =
+    await Promise.all([
+      fetchGallListNameAbbr({}),
+      fetchGallListNameAbbr({ sort: "popular", size: 5 }),
+      fetchGallListNameAbbr({ size: 5 }),
+    ]);
 
   return (
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-800 max-w-5xl mx-auto`}
       >
-        <Header user={user} gallList={gallMeta} />
-        <RecentGall gallList={gallMeta} />
+        {/* 헤더 */}
+        <Header isLogin={isLogin} gallList={gallNameList} />
+
+        {/* 최근 갤러리 */}
+        <RecentGall gallList={gallNameList} />
+
+        {/* 메인 */}
         <div className="lg:flex gap-8 mb-30">
-          <div className="lg:basis-3/4">{children}</div>
-          <div className="lg:basis-1/4 hidden lg:flex flex-col gap-16 px-4">
+          {/* 왼쪽 */}
+          <main className="lg:basis-3/4">{children}</main>
+
+          {/* 오른쪽 */}
+          <aside className="lg:basis-1/4 hidden lg:flex flex-col gap-16 px-4">
             <RightItems
               user={user}
-              newestGallMeta={newestGallMeta}
-              popularGallMeta={popularGallMeta}
+              popularGallNameList={popularGallNameList}
+              newestGallNameList={newestGallNameList}
             />
-          </div>
+          </aside>
         </div>
       </body>
     </html>

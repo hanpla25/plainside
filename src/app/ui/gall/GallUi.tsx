@@ -1,51 +1,29 @@
-import { Post } from "@/app/lib/definitions";
-import PostList from "../post/PostList";
-import PostSearchForm from "../post/PostSearchForm";
+// --- Types ---
+import { PostListData } from "@/app/lib/definitions";
+
+// --- Ui ---
+import GallPostList from "./GallPostList";
+import GallSearchForm from "./GallSearchForm";
 import Pagination from "../common/Pagination";
-import GallButtons from "./GallButtons";
 
 type Props = {
   abbr: string;
-  postListData: Post[];
+  postListData: PostListData;
   currentPage: number;
-  search: string;
-  option: string;
-  totalPages: number;
-  query: string;
-  like_count: number;
-  mode: string;
+  totalPage: number;
 };
 
 export default function GallUi({
   abbr,
   postListData,
   currentPage,
-  search,
-  option,
-  totalPages,
-  query,
-  like_count,
-  mode,
+  totalPage,
 }: Props) {
   return (
     <>
-      <GallButtons abbr={abbr} like_count={like_count} />
-      <PostList
-        abbr={abbr}
-        isAbbr={true}
-        PostListData={postListData}
-        query={query}
-      />
-      <GallButtons abbr={abbr} like_count={like_count} />
-      <PostSearchForm />
-      <Pagination
-        href={`/gallery/${abbr}`}
-        currentPage={currentPage}
-        search={search}
-        option={option}
-        totalPages={totalPages}
-        mode={mode}
-      />
+      <GallPostList abbr={abbr} postList={postListData.post_list} />
+      <GallSearchForm abbr={abbr} />
+      <Pagination currentPage={currentPage} totalPage={totalPage} />
     </>
   );
 }
