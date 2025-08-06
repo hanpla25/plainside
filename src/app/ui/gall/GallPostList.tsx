@@ -11,9 +11,10 @@ import GallPostListInfo from "./GallPostListInfo";
 type Props = {
   abbr: string;
   postList: PostList[];
+  queryString: string;
 };
 
-export default function GallPostList({ abbr, postList }: Props) {
+export default function GallPostList({ abbr, postList, queryString }: Props) {
   if (postList.length === 0)
     return <HaveNoDataMessage message={"아직 작성된 게시글이 없어요."} />;
 
@@ -21,7 +22,7 @@ export default function GallPostList({ abbr, postList }: Props) {
     <ul className="divide-y divide-neutral-200">
       {postList.map((item) => (
         <li key={item.id} className="p-3 hover:bg-neutral-50">
-          <Link href={`/${abbr}/${item.id}`} className="block">
+          <Link href={`/${abbr}/${item.id}?${queryString}`} className="block">
             <GallPostListTitle
               title={item.title}
               commentCount={item.comment_count}

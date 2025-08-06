@@ -2,7 +2,7 @@
 import { BEST_ABBR } from "@/app/constants/href-constants";
 
 // --- Data ---
-import { fetchPostListData } from "@/app/lib/gall-data";
+import { getAbbrPageData } from "@/app/lib/abbr-page-helper";
 
 // --- UI ---
 import GallUi from "@/app/ui/gall/GallUi";
@@ -11,22 +11,20 @@ type SearchParams = Promise<{ [key: string]: string }>;
 
 export default async function BestPage(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
-  const { search = "", option = "title", page = "1" } = searchParams;
 
-  const bestPostListData = await fetchPostListData({
-    popular: true,
-    page: Number(page),
-    search: search,
-    option: option,
+  const data = await getAbbrPageData({
+    searchParams,
+    isPopular: true,
   });
 
   return (
     <>
       <GallUi
         abbr={BEST_ABBR}
-        postListData={bestPostListData}
-        currentPage={Number(page)}
-        totalPage={bestPostListData.total_page}
+        postListData={data.postListData}
+        currentPage={data.currentPage}
+        totalPage={data.totalPage}
+        queryString={data.queryString}
       />
     </>
   );

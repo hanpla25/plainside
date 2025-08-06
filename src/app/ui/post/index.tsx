@@ -12,7 +12,7 @@ type Props = {
 
 export default function PostUi({ postData }: Props) {
   return (
-    <div>
+    <>
       <PostTitle title={postData.title} createdAt={postData.created_at} />
       <PostInfo
         isLogin={postData.is_login}
@@ -28,6 +28,6 @@ export default function PostUi({ postData }: Props) {
         like_count={postData.like_count}
         dislike_count={postData.dislike_count}
       />
-    </div>
+    </>
   );
 }

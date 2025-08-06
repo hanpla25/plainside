@@ -11,6 +11,7 @@ type Props = {
   postListData: PostListData;
   currentPage: number;
   totalPage: number;
+  queryString: string;
 };
 
 export default function GallUi({
@@ -18,10 +19,15 @@ export default function GallUi({
   postListData,
   currentPage,
   totalPage,
+  queryString,
 }: Props) {
   return (
     <>
-      <GallPostList abbr={abbr} postList={postListData.post_list} />
+      <GallPostList
+        abbr={abbr}
+        postList={postListData.post_list}
+        queryString={queryString}
+      />
       <GallSearchForm abbr={abbr} />
       <Pagination currentPage={currentPage} totalPage={totalPage} />
     </>

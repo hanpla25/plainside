@@ -1,5 +1,5 @@
 // --- Data ---
-import { fetchPostListData } from "@/app/lib/gall-data";
+import { getAbbrPageData } from "@/app/lib/abbr-page-helper";
 
 /// --- UI ---
 import GallUi from "@/app/ui/gall/GallUi";
@@ -12,27 +12,26 @@ export default async function AbbrPage(props: {
   searchParams: SearchParams;
 }) {
   const params = await props.params;
+  const searchParams = await props.searchParams;
+  const { sort } = searchParams;
+  const isPopular = sort ? true : false;
+
   const abbr = params.abbr;
 
-  const searchParams = await props.searchParams;
-  const { search = "", option = "title", page = "1" } = searchParams;
-
-  const [postListData] = await Promise.all([
-    fetchPostListData({
-      abbr,
-      page: Number(page),
-      search: search,
-      option: option,
-    }),
-  ]);
+  const data = await getAbbrPageData({
+    abbr,
+    searchParams,
+    isPopular: isPopular,
+  });
 
   return (
     <div>
       <GallUi
         abbr={abbr}
-        postListData={postListData}
-        currentPage={Number(page)}
-        totalPage={postListData.total_page}
+        postListData={data.postListData}
+        currentPage={data.currentPage}
+        totalPage={data.totalPage}
+        queryString={data.queryString}
       />
     </div>
   );

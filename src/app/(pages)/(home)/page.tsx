@@ -1,32 +1,46 @@
 // --- Constants ---
 import { BEST_ABBR } from "@/app/constants/href-constants";
+import { getAbbrPageData } from "@/app/lib/abbr-page-helper";
 
 // --- Data ---
-import { fetchPostListData } from "@/app/lib/gall-data";
+import { fetchGallListNameAbbr } from "@/app/lib/gall-data";
 
 // --- UI ---
 import GallHeader from "@/app/ui/gall/GallHeader";
 import GallUi from "@/app/ui/gall/GallUi";
+import { GallList } from "@/app/ui/layout/gall-list";
 
+type Params = Promise<{ abbr: string }>;
 type SearchParams = Promise<{ [key: string]: string }>;
 
-export default async function HomePage(props: { searchParams: SearchParams }) {
+export default async function HomePage(props: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const params = await props.params;
   const searchParams = await props.searchParams;
-  const { page = "1" } = searchParams;
 
-  const bestPostListData = await fetchPostListData({
-    popular: true,
-    page: Number(page),
+  const abbr = params.abbr;
+
+  const popularGallNameList = await fetchGallListNameAbbr({
+    sort: "popular",
+    size: 5,
   });
+
+  const data = await getAbbrPageData({ searchParams, isPopular: true });
 
   return (
     <>
+      <div className="mb-2 lg:hidden">
+        <GallList label={"인기 갤러리"} gallList={popularGallNameList} />
+      </div>
       <GallHeader abbr={BEST_ABBR} gallName={"실시간 베스트"} />
       <GallUi
         abbr={BEST_ABBR}
-        postListData={bestPostListData}
-        currentPage={Number(page)}
-        totalPage={bestPostListData.total_page}
+        postListData={data.postListData}
+        currentPage={data.currentPage}
+        totalPage={data.totalPage}
+        queryString={data.queryString}
       />
     </>
   );

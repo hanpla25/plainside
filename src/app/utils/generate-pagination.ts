@@ -7,21 +7,19 @@ export default function generatePagination(
   }
 
   if (currentPage <= 3) {
-    return [1, 2, 3, "...", totalPage];
+    return [1, 2, 3, "...", totalPage - 1, totalPage];
   }
 
   if (currentPage >= totalPage - 2) {
-    return [1, "...", totalPage - 2, totalPage - 1, totalPage];
+    return [1, 2, "...", totalPage - 2, totalPage - 1, totalPage];
   }
 
   return [
     1,
     "...",
-    currentPage - 2,
     currentPage - 1,
     currentPage,
     currentPage + 1,
-    currentPage + 2,
     "...",
     totalPage,
   ];
