@@ -2,10 +2,10 @@
 
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { createClient } from "../utils/supabase/server";
+import { createClient } from "../../utils/supabase/server";
 
 // --- types ---
-import { UserData, UserPayload } from "./definitions";
+import { UserData, UserPayload } from "../definitions";
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {

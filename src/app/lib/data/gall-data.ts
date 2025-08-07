@@ -1,17 +1,17 @@
 import { redirect } from "next/navigation";
-import { createClient } from "../utils/supabase/server";
+import { createClient } from "../../utils/supabase/server";
 
 // --- Types ---
-import { Gall, GallMeta, PostListData } from "./definitions";
+import { Gall, GallMeta, PostListData } from "../definitions";
 
 // --- Constants ---
 import {
   POST_LIST_ITEM_PER_PAGE,
   POST_LIST_LIKE_CUT,
-} from "../constants/query-constants";
+} from "../../constants/query-constants";
 
 // --- Utils ---
-import { maskIpAddress } from "../utils/masking";
+import { maskIpAddress } from "../../utils/masking";
 
 export async function fetchGallListData(): Promise<Gall[]> {
   const supabase = await createClient();
@@ -33,15 +33,15 @@ export async function fetchGallListNameAbbr({
   sort,
   size,
 }: {
-  sort?: "popular";
+  sort?: "popular" | "newest";
   size?: number;
 }): Promise<GallMeta[]> {
   const supabase = await createClient();
 
   const query = supabase.from("galleries").select("name,abbr");
 
+  if (sort === "newest") query.order("id", { ascending: false });
   if (sort === "popular") query.order("today_post_count", { ascending: false });
-
   if (size) query.limit(size);
 
   const { data, error } = await query;

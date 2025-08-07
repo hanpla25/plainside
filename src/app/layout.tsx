@@ -9,8 +9,8 @@ import Header from "./ui/layout/header";
 import RecentGall from "./ui/layout/recent-gall";
 
 // --- Data ---
-import { fetchGallListNameAbbr } from "./lib/gall-data";
-import { getUserFromToken } from "./lib/user-data";
+import { fetchGallListNameAbbr } from "./lib/data/gall-data";
+import { getUserFromToken } from "./lib/data/user-data";
 import RightItems from "./ui/layout/right-items";
 
 const geistSans = Geist({
@@ -38,7 +38,7 @@ export default async function RootLayout({
     await Promise.all([
       fetchGallListNameAbbr({}),
       fetchGallListNameAbbr({ sort: "popular", size: 5 }),
-      fetchGallListNameAbbr({ size: 5 }),
+      fetchGallListNameAbbr({ sort: "newest", size: 5 }),
     ]);
 
   return (

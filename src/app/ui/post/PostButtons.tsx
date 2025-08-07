@@ -1,6 +1,6 @@
 "use client";
 
-import { increaseCollumFromPosts } from "@/app/lib/post-actions";
+import { increaseCollumFromPosts } from "@/app/lib/actions/post-actions";
 import { useState } from "react";
 
 function Button({

@@ -1,6 +1,5 @@
-// app/lib/helpers/get-common-data.ts
-import { fetchPostListData } from "@/app/lib/gall-data";
-import { fetchPostData } from "@/app/lib/post-data";
+import { fetchPostListData } from "@/app/lib/data/gall-data";
+import { fetchPostData } from "@/app/lib/data/post-data";
 
 type GetCommonDataOptions = {
   abbr?: string;

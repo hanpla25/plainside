@@ -3,7 +3,7 @@ import { BEST_ABBR } from "@/app/constants/href-constants";
 import { getAbbrPageData } from "@/app/lib/abbr-page-helper";
 
 // --- Data ---
-import { fetchGallListNameAbbr } from "@/app/lib/gall-data";
+import { fetchGallListNameAbbr } from "@/app/lib/data/gall-data";
 
 // --- UI ---
 import GallHeader from "@/app/ui/gall/GallHeader";
@@ -17,10 +17,7 @@ export default async function HomePage(props: {
   params: Params;
   searchParams: SearchParams;
 }) {
-  const params = await props.params;
   const searchParams = await props.searchParams;
-
-  const abbr = params.abbr;
 
   const popularGallNameList = await fetchGallListNameAbbr({
     sort: "popular",

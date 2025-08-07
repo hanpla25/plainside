@@ -2,7 +2,7 @@ import Link from "next/link";
 
 // --- actions ---
 import { UserPayload } from "@/app/lib/definitions";
-import { fetchUserData } from "@/app/lib/user-data";
+import { fetchUserData } from "@/app/lib/data/user-data";
 
 // --- UI ---
 import NeedLogin from "./NeedLogin";

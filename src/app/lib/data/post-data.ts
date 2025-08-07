@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
-import { createClient } from "../utils/supabase/server";
+import { createClient } from "../../utils/supabase/server";
 
 // --- Types ---
-import { Post } from "./definitions";
+import { Post } from "../definitions";
 
 // --- Utils ---
-import { maskIpAddress } from "../utils/masking";
+import { maskIpAddress } from "../../utils/masking";
 
 
 export async function fetchPostData({

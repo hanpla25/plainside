@@ -1,5 +1,5 @@
 // --- Data ---
-import { fetchGallAbbrName } from "@/app/lib/gall-data";
+import { fetchGallAbbrName } from "@/app/lib/data/gall-data";
 
 // --- UI ---
 import GallHeader from "@/app/ui/gall/GallHeader";
