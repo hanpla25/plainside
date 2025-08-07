@@ -6,10 +6,7 @@ import { useActionState } from "react";
 import { createGallToSupabase } from "@/app/lib/actions/create-gall-actions";
 import AuthInput from "../auth/AuthInput";
 import AuthButton from "../auth/AuthButton";
-
-function Msg({ msg }: { msg: string }) {
-  return <p className="text-sm text-red-500 mt-2">{msg}</p>;
-}
+import AuthMsg from "../auth/AuthMsg";
 
 export default function CreateGallForm() {
   const [msg, formAction, isPending] = useActionState(
@@ -38,7 +35,7 @@ export default function CreateGallForm() {
 
       <AuthButton isPending={isPending} label={"신청하기"} />
 
-      {msg && <Msg msg={msg} />}
+      {msg && <AuthMsg msg={msg} />}
     </form>
   );
 }

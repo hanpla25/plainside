@@ -23,7 +23,10 @@ function Button({
       collum: collum,
     });
 
-    setCount(data);
+    if (data) {
+      setCount(data);
+    }
+
     setDisable(true);
   };
 

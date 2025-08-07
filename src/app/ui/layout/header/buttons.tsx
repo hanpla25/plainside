@@ -5,6 +5,7 @@ import useSignInHref from "@/app/hooks/use-signin-href";
 
 // --- Icons ---
 import { AlignJustify, Search, X } from "lucide-react";
+import { signout } from "@/app/lib/actions/auth-actions";
 
 function NavLinkButton({
   href,
@@ -54,7 +55,7 @@ export function MobileMenuButton({
 
 export function SignOutButton() {
   return (
-    <form>
+    <form action={signout}>
       <button type="submit" className="cursor-pointer">
         로그아웃
       </button>

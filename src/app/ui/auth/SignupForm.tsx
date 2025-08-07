@@ -1,11 +1,23 @@
+"use client";
+
+import { useActionState } from "react";
+
+// --- Actions ---
+import { signup } from "@/app/lib/actions/auth-actions";
+
+// --- UI ---
 import AuthButton from "./AuthButton";
 import AuthInput from "./AuthInput";
+import AuthMsg from "./AuthMsg";
 
 export default function SignupForm() {
-  const isPending = false;
-  
+  const [msg, formAction, isPending] = useActionState(signup, null);
+
   return (
-    <form className="lg:px-0 max-w-lg mx-auto px-2 py-6 space-y-4">
+    <form
+      action={formAction}
+      className="lg:px-0 max-w-lg mx-auto px-2 py-6 space-y-4"
+    >
       {/* 닉네임 */}
       <AuthInput
         type={"text"}
@@ -31,7 +43,10 @@ export default function SignupForm() {
       />
 
       {/* 제출버튼 */}
+
       <AuthButton label="회원가입" isPending={isPending} />
+
+      {msg && <AuthMsg msg={msg} />}
     </form>
   );
 }

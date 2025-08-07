@@ -8,7 +8,7 @@ export async function increaseCollumFromPosts({
 }: {
   postId: number;
   collum: "like_count" | "dislike_count";
-}) {
+}): Promise<number | null> {
   const supabase = await createClient();
 
   const collumMap = {
