@@ -40,7 +40,7 @@ export default function Header({ isLogin, gallList }: Props) {
         />
       </header>
 
-      {isMobileMenuOpen && <MobileMenuWrapper isLogin={false} />}
+      {isMobileMenuOpen && <MobileMenuWrapper isLogin={isLogin} />}
       {isSearchOpen && (
         <SearchModal
           onClick={() => setIsSearchOpen((prev) => !prev)}

@@ -21,8 +21,11 @@ export default function GallPostList({ abbr, postList, queryString }: Props) {
   return (
     <ul className="divide-y divide-neutral-200">
       {postList.map((item) => (
-        <li key={item.id} className="p-3 hover:bg-neutral-50">
-          <Link href={`/${abbr}/${item.id}?${queryString}`} className="block">
+        <li key={item.id} className="hover:bg-neutral-50">
+          <Link
+            href={`/${abbr}/${item.id}?${queryString}`}
+            className="block p-3"
+          >
             <GallPostListTitle
               title={item.title}
               commentCount={item.comment_count}
