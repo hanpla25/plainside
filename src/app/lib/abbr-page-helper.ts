@@ -1,5 +1,5 @@
 import { fetchPostListData } from "@/app/lib/data/gall-data";
-import { fetchPostData } from "@/app/lib/data/post-data";
+import { fetchCommentData, fetchPostData } from "@/app/lib/data/post-data";
 
 type GetCommonDataOptions = {
   abbr?: string;
@@ -30,9 +30,14 @@ export async function getAbbrPageData({
     ? fetchPostData({ postId: Number(postId) })
     : null;
 
-  const [postListData, postData] = await Promise.all([
+  const commentDataPromise = postId
+    ? fetchCommentData({ postId: Number(postId) })
+    : null;
+
+  const [postListData, postData, postCommentData] = await Promise.all([
     postListPromise,
     postDataPromise,
+    commentDataPromise,
   ]);
 
   const queryString = new URLSearchParams(searchParams).toString();
@@ -43,5 +48,6 @@ export async function getAbbrPageData({
     currentPage: pageNum,
     totalPage: postListData.total_page,
     queryString,
+    postCommentData,
   };
 }

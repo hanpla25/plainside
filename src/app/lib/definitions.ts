@@ -60,3 +60,16 @@ export type PostListData = {
   count: number;
   total_page: number;
 };
+
+export type CommentData = {
+  id: number;
+  post_id: number;
+  user_name: string;
+  post_title: string;
+  abbr: string;
+  gall_name: string;
+  content: string;
+  ip_address: string;
+  created_at: string;
+  is_login: boolean;
+};

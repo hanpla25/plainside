@@ -8,7 +8,7 @@ import { fetchGallListNameAbbr } from "@/app/lib/data/gall-data";
 // --- UI ---
 import GallHeader from "@/app/ui/gall/GallHeader";
 import GallUi from "@/app/ui/gall/GallUi";
-import { GallList } from "@/app/ui/layout/gall-list";
+import GallList from "@/app/ui/layout/gall-list";
 
 type Params = Promise<{ abbr: string }>;
 type SearchParams = Promise<{ [key: string]: string }>;

@@ -2,11 +2,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "../../utils/supabase/server";
 
 // --- Types ---
-import { Post } from "../definitions";
+import { CommentData, Post } from "../definitions";
 
 // --- Utils ---
 import { maskIpAddress } from "../../utils/masking";
-
 
 export async function fetchPostData({
   postId,
@@ -46,4 +45,29 @@ export async function fetchPostData({
     is_login: data.is_login,
     ip_address: maskedIp,
   };
+}
+
+export async function fetchCommentData({
+  postId,
+}: {
+  postId: number;
+}): Promise<CommentData[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("comments")
+    .select(
+      "id,post_id,user_name,abbr,gall_name,post_title,content,ip_address,created_at,first_comment_id,is_login"
+    )
+    .eq("post_id", postId)
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data.map((item) => ({
+    ...item,
+    ip_address: maskIpAddress(item.ip_address),
+  }));
 }

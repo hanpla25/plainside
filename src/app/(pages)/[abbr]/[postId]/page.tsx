@@ -28,8 +28,8 @@ export default async function AbbrPostPage(props: {
   }
 
   return (
-    <div>
-      <PostUi postData={data.postData} />
+    <div className="space-y-4">
+      <PostUi postData={data.postData} postCommentData={data.postCommentData} />
       <GallUi
         abbr={abbr}
         postListData={data.postListData}

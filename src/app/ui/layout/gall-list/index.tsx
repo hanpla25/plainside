@@ -3,7 +3,7 @@ import Link from "next/link";
 // --- Types ---
 import { GallMeta } from "@/app/lib/definitions";
 
-export function GallList({
+export default function GallList({
   label,
   gallList,
 }: {
