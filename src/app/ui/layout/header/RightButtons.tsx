@@ -16,6 +16,25 @@ type Props = {
   onClick: () => void;
 };
 
+export default function RightButtons({
+  isLogin,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen,
+  onClick,
+}: Props) {
+  return (
+    <>
+      <DesktopButtons isLogin={isLogin} onClick={onClick} />
+      <MobileButtons
+        isLogin={isLogin}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        onClick={onClick}
+      />
+    </>
+  );
+}
+
 function DesktopButtons({
   isLogin,
   onClick,
@@ -62,24 +81,5 @@ function MobileButtons({
         onClick={() => setIsMobileMenuOpen((prev) => !prev)}
       />
     </div>
-  );
-}
-
-export default function RightButtons({
-  isLogin,
-  isMobileMenuOpen,
-  setIsMobileMenuOpen,
-  onClick,
-}: Props) {
-  return (
-    <>
-      <DesktopButtons isLogin={isLogin} onClick={onClick} />
-      <MobileButtons
-        isLogin={isLogin}
-        isMobileMenuOpen={isMobileMenuOpen}
-        setIsMobileMenuOpen={setIsMobileMenuOpen}
-        onClick={onClick}
-      />
-    </>
   );
 }

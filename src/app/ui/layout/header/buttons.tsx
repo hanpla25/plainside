@@ -14,7 +14,11 @@ function NavLinkButton({
   href: string;
   children: React.ReactNode;
 }) {
-  return <Link href={href}>{children}</Link>;
+  return (
+    <Link href={href} className="block w-full lg:w-auto">
+      {children}
+    </Link>
+  );
 }
 
 // --- Links ---
@@ -56,7 +60,7 @@ export function MobileMenuButton({
 export function SignOutButton() {
   return (
     <form action={signout}>
-      <button type="submit" className="cursor-pointer">
+      <button type="submit" className="block w-full cursor-pointer text-left">
         로그아웃
       </button>
     </form>

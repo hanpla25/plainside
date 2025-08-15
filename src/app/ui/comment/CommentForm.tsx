@@ -1,4 +1,5 @@
 // --- Data ---
+import { insertCommentToSupabase } from "@/app/lib/actions/post-actions";
 import { getUserFromToken } from "@/app/lib/data/user-data";
 
 export default async function CommentForm() {
@@ -6,7 +7,10 @@ export default async function CommentForm() {
   const isLogin = user ? true : false;
 
   return (
-    <form className="lg:mx-0 mx-2 flex flex-col px-4 py-3 gap-4 border border-neutral-200 rounded-lg border-b-neutral-300">
+    <form
+      action={insertCommentToSupabase}
+      className="lg:mx-0 mx-2 flex flex-col px-4 py-3 gap-4 border border-neutral-200 rounded-lg border-b-neutral-300"
+    >
       <label>댓글</label>
       <label htmlFor="username" className="sr-only">
         닉네임
@@ -22,7 +26,7 @@ export default async function CommentForm() {
           id="username"
           placeholder="닉네임"
           className="w-full p-1 border border-neutral-400 flex-1"
-          defaultValue={user?.user_name}
+          value={user?.user_name}
           disabled={isLogin}
           minLength={2}
         />
@@ -45,13 +49,13 @@ export default async function CommentForm() {
       </div>
 
       <div className="flex items-center gap-2">
-        <label htmlFor="comment" className="sr-only">
+        <label htmlFor="content" className="sr-only">
           댓글
         </label>
 
         <textarea
-          name="comment"
-          id="comment"
+          name="content"
+          id="content"
           placeholder="댓글 쓰기"
           className="flex-1 border border-neutral-300 px-3 py-2 rounded-md text-sm bg-neutral-100 focus:outline-none focus:border-neutral-500 resize-none"
           minLength={1}
@@ -63,6 +67,11 @@ export default async function CommentForm() {
         >
           등록
         </button>
+
+        <input type="hidden" name="postId" value={93} />
+        <input type="hidden" name="abbr" value={"lol"} />
+        <input type="hidden" name="gallName" value={"리그 오브 레전드"} />
+        <input type="hidden" name="postTitle" value={"대상혁 4년 레전드"} />
       </div>
     </form>
   );

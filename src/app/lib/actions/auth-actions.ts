@@ -58,7 +58,7 @@ export async function signup(
     return "이미 사용중인 아이디거나 닉네임 입니다.";
   }
 
-  redirect("/");
+  redirect("/signin");
 }
 
 export async function signin(

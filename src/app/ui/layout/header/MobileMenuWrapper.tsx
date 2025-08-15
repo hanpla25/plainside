@@ -7,6 +7,14 @@ import {
   SignUpLinkButton,
 } from "./buttons";
 
+export default function MobileMenuWrapper({ isLogin }: { isLogin: boolean }) {
+  return (
+    <ul className="lg:hidden absolute bg-white z-50 p-2 w-[100vw] h-[calc(100vh-60px)] flex flex-col gap-6 top-[60px]">
+      <MenuContent isLogin={isLogin} />
+    </ul>
+  );
+}
+
 function MenuItem({ children }: { children: React.ReactNode }) {
   return <li className="hover:bg-neutral-100 p-1 pl-2">{children}</li>;
 }
@@ -48,13 +56,5 @@ function MenuContent({ isLogin }: { isLogin: boolean }) {
 
       {isLogin ? <LoginMenuContent /> : <NonLoginContent />}
     </>
-  );
-}
-
-export default function MobileMenuWrapper({ isLogin }: { isLogin: boolean }) {
-  return (
-    <ul className="lg:hidden absolute bg-white z-50 p-2 w-[100vw] h-[calc(100vh-60px)] flex flex-col gap-6 top-[60px]">
-      <MenuContent isLogin={isLogin} />
-    </ul>
   );
 }

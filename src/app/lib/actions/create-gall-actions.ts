@@ -7,8 +7,6 @@ export async function createGallToSupabase(
   _prevState: string | null,
   formData: FormData
 ): Promise<string | null> {
-  const supabase = await createClient();
-
   const rawData = {
     gallName: formData.get("gallName"),
     abbr: formData.get("abbr"),
@@ -29,6 +27,8 @@ export async function createGallToSupabase(
   if (!abbrRegex.test(abbr)) {
     return "갤러리 주소는 영어 소문자만 입력할 수 있어요.";
   }
+
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("galleries")
