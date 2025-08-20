@@ -1,3 +1,4 @@
+import { getImageUrl } from "@/app/lib/actions/post-actions";
 import type { Node as TiptapNode } from "@tiptap/pm/model";
 import { NodeSelection } from "@tiptap/pm/state";
 import type { Editor } from "@tiptap/react";
@@ -262,7 +263,7 @@ export const handleImageUpload = async (file: File): Promise<string> => {
 
   // For demo/testing: Simulate upload progress. In production, replace the following code
   // with your own upload implementation.
-  const imageUrl = "";
+  const imageUrl = await getImageUrl(file);
   return imageUrl;
 };
 

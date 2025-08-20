@@ -7,7 +7,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import generatePagination from "@/app/utils/generate-pagination";
 
 // --- Icons ---
-import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // --- UI ---
 import PaginationForm from "./PaginationForm";
@@ -71,7 +71,11 @@ export default function Pagination({
     <div className="mt-6 flex flex-col items-center">
       <div className="w-auto flex justify-center items-center gap-2">
         {/* 이전 버튼 */}
-        {currentPage > 1 && (
+        {currentPage === 1 ? (
+          <Link href={"#"} className="px-2 md:px-0">
+            <ChevronLeft color="#b3b3b3" />
+          </Link>
+        ) : (
           <PaginationArrow
             href={createPageURL(currentPage - 1)}
             direction="left"
@@ -80,27 +84,22 @@ export default function Pagination({
 
         {/* 페이지 그룹 */}
         <div className="flex w-full md:w-auto md:space-x-2">
-          {pageGroup.map((page, i) =>
-            page === "..." ? (
-              <div
-                key={i}
-                className="flex items-center justify-center w-9 text-neutral-400"
-              >
-                <Ellipsis className="w-4 h-4" />
-              </div>
-            ) : (
-              <PaginationNumber
-                key={`${page}-${i}`}
-                page={page}
-                href={createPageURL(page)}
-                isActive={currentPage === page}
-              />
-            )
-          )}
+          {pageGroup.map((page, i) => (
+            <PaginationNumber
+              key={`${page}-${i}`}
+              page={page}
+              href={createPageURL(page)}
+              isActive={currentPage === page}
+            />
+          ))}
         </div>
 
         {/* 다음 버튼 */}
-        {currentPage < totalPage && (
+        {currentPage === totalPage ? (
+          <Link href={"#"} className="px-2 md:px-0">
+            <ChevronRight color="#b3b3b3" />
+          </Link>
+        ) : (
           <PaginationArrow
             href={createPageURL(currentPage + 1)}
             direction="right"

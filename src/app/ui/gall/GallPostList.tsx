@@ -82,7 +82,7 @@ export default function GallPostList({
   if (postList.length === 0) return <EmptyUi text="아직 게시글이 없어요." />;
 
   return (
-    <ul className="divide-y divide-neutral-200">
+    <ul className="divide-y divide-neutral-200 min-h-[529px]">
       {postList.map((item) => (
         <li key={item.id} className="hover:bg-neutral-50">
           <Link

@@ -5,6 +5,8 @@ export const FormInput = ({
   placeholder,
   disabled,
   defaultValue,
+  minLength,
+  maxLength,
 }: {
   label: string;
   type: string;
@@ -12,6 +14,8 @@ export const FormInput = ({
   placeholder: string;
   disabled?: boolean;
   defaultValue?: string;
+  minLength?: number;
+  maxLength?: number;
 }) => {
   return (
     <div className="flex flex-col space-y-1">
@@ -26,7 +30,9 @@ export const FormInput = ({
         required
         disabled={disabled}
         defaultValue={defaultValue}
-        className="px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none"
+        minLength={minLength}
+        maxLength={maxLength}
+        className="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none"
       />
     </div>
   );
