@@ -1,12 +1,14 @@
 "use server";
 
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { createClient } from "@/app/utils/supabase/server";
+
+// --- 타입 ---
+import { JSONContent } from "@tiptap/react";
 
 // --- 데이터 ---
 import { getUserToken } from "../data/user-data";
-import { JSONContent } from "@tiptap/react";
-import { redirect } from "next/navigation";
 
 const getIp = async () => {
   const headersList = await headers();
@@ -56,8 +58,6 @@ async function moveImage(imageName: string): Promise<void> {
 
 function extractImageNamesFromContent(content: string): string[] {
   const contentObj = JSON.parse(content);
-  console.log(typeof contentObj);
-  console.log(contentObj);
 
   const imageNames: string[] = [];
 
@@ -128,7 +128,7 @@ export async function writeAction(
   const ipAddress = await getIp();
 
   const userId = userToken ? userToken.user_id : null;
-  const name = formData.get("name");
+  const name = userToken ? userToken.user_name : formData.get("name");
   const title = formData.get("title");
   const content = formData.get("content");
   const password = formData.get("password");
@@ -141,7 +141,6 @@ export async function writeAction(
 
   if (!isLogin) {
     if (typeof name !== "string" || typeof password !== "string") {
-      console.log("저기");
       return "잘못된 요청이에요.";
     }
   }
@@ -180,8 +179,25 @@ export async function writeAction(
     return "글쓰기중 에러가 발생했습니다.";
   }
 
-  if (userToken)
-    await supabase.rpc("increment_write_count", { user_id: userId });
+  if (userToken) {
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("write_count")
+      .eq("id", userToken.user_id)
+      .single();
+
+    if (!userError && userData) {
+      const { error: updateError } = await supabase
+        .from("users")
+        .update({ write_count: userData.write_count + 1 })
+        .eq("id", userToken.user_id);
+
+      if (updateError) {
+        console.error("글쓰기 증가 실패:", updateError);
+      }
+    }
+  }
+
   const postId = data.id;
 
   redirect(`/${abbr}/${postId}`);

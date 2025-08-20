@@ -50,7 +50,7 @@ export default function GallSearchForm({ abbr }: { abbr: string }) {
   const option = searchParams.get("option") ?? "title";
   const mode = searchParams.get("mode");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = () => {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }

@@ -18,7 +18,12 @@ export default async function WritePage(props: { params: Params }) {
 
   return (
     <>
-      <WriteForm abbr={abbr} gallName={gallName} isLogin={isLogin} userName={userName} />
+      <WriteForm
+        abbr={abbr}
+        gallName={gallName}
+        isLogin={isLogin}
+        userName={userName}
+      />
     </>
   );
 }
