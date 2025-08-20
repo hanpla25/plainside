@@ -2,8 +2,6 @@
 
 // --- UI ---
 
-type Props = {};
-
 export default function PostUi() {
   return (
     <div>
