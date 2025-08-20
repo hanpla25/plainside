@@ -1,5 +1,6 @@
 "use client";
 
+import { FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import Form from "next/form";
 
@@ -49,9 +50,19 @@ export default function GallSearchForm({ abbr }: { abbr: string }) {
   const option = searchParams.get("option") ?? "title";
   const mode = searchParams.get("mode");
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
   return (
     <div className="flex justify-center mx-2 mt-4">
-      <Form action={`/${abbr}`} className="flex gap-1 w-full max-w-sm">
+      <Form
+        action={`/${abbr}`}
+        onSubmit={handleSubmit}
+        className="flex gap-1 w-full max-w-sm"
+      >
         <Select option={option} />
         <Input search={search} mode={mode} />
         <Button />
