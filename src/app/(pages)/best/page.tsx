@@ -1,8 +1,8 @@
 // --- 데이터 ---
-import { fetchPostListData } from "../lib/data/gall-data";
+import { fetchPostListData } from "@/app/lib/data/gall-data";
 
 // --- UI ---
-import GallUi from "../ui/gall/GallUi";
+import GallUi from "@/app/ui/gall/GallUi";
 
 type SearchParams = Promise<{ [key: string]: string }>;
 

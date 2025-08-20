@@ -1,5 +1,5 @@
 // --- UI ---
-import HeaderText from "../ui/common/HeaderText";
+import HeaderText from "@/app/ui/common/HeaderText";
 
 export default function BestLayout({
   children,

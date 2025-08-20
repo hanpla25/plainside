@@ -14,7 +14,7 @@ function Select({ option }: { option: string }) {
   );
 }
 
-function Input({ search }: { search: string }) {
+function Input({ search, mode }: { search: string; mode: string | null }) {
   return (
     <>
       <label htmlFor="search" className="sr-only">
@@ -27,6 +27,9 @@ function Input({ search }: { search: string }) {
         defaultValue={search}
         className={`${style} flex-1 min-w-0`}
       />
+      {!!mode && (
+        <input type="hidden" id="mode" name="mode" defaultValue="popular" />
+      )}
     </>
   );
 }
@@ -44,12 +47,13 @@ export default function GallSearchForm({ abbr }: { abbr: string }) {
 
   const search = searchParams.get("search") ?? "";
   const option = searchParams.get("option") ?? "title";
+  const mode = searchParams.get("mode");
 
   return (
     <div className="flex justify-center mx-2 mt-4">
       <Form action={`/${abbr}`} className="flex gap-1 w-full max-w-sm">
         <Select option={option} />
-        <Input search={search} />
+        <Input search={search} mode={mode} />
         <Button />
       </Form>
     </div>
