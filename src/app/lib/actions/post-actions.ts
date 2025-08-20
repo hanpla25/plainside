@@ -56,6 +56,8 @@ async function moveImage(imageName: string): Promise<void> {
 
 function extractImageNamesFromContent(content: string): string[] {
   const contentObj = JSON.parse(content);
+  console.log(typeof contentObj);
+  console.log(contentObj);
 
   const imageNames: string[] = [];
 
@@ -97,7 +99,7 @@ function convertSrcToNewPath(src: string): string {
   }
 }
 
-function updateContentImagePaths(contentObj: any) {
+function updateContentImagePaths(contentObj: JSONContent) {
   if (contentObj.type === "image" && contentObj.attrs?.src) {
     contentObj.attrs.src = convertSrcToNewPath(contentObj.attrs.src);
   }
