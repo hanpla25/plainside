@@ -6,7 +6,7 @@ import { MAX_RECENT, STORAGE_KEY } from "../constants/recent-gall-constants";
 // --- 타입 ---
 import { Gall } from "../lib/definitions";
 
-const isGall = (item: any): item is Gall => {
+const isGall = (item: Gall): item is Gall => {
   return (
     item &&
     typeof item === "object" &&

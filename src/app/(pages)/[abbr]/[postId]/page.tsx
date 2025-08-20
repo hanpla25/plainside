@@ -13,7 +13,7 @@ export default async function PostPage(props: {
   searchParams: SearchParams;
 }) {
   const params = await props.params;
-  const { abbr, postId } = params;
+  const { abbr } = params;
 
   const searchParams = await props.searchParams;
   const { search = "", option = "title", page = "1" } = searchParams;
