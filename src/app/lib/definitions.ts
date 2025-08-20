@@ -1,16 +1,3 @@
-export type Gall = {
-  id: number;
-  abbr: string;
-  name: string;
-  creator_name: string;
-  created_at: string;
-};
-
-export type GallMeta = {
-  name: string;
-  abbr: string;
-};
-
 export type UserPayload = {
   user_id: string;
   user_name: string;
@@ -18,27 +5,15 @@ export type UserPayload = {
 };
 
 export type UserData = {
-  id: string;
   name: string;
   write_count: number;
   comment_count: number;
   created_at: string;
 };
 
-export type Post = {
-  id: number;
-  user_name: string;
-  title: string;
-  content: string;
+export type Gall = {
   abbr: string;
-  gall_name: string;
-  view_count: number;
-  like_count: number;
-  dislike_count: number;
-  comment_count: number;
-  ip_address: string;
-  created_at: string;
-  is_login: boolean;
+  name: string;
 };
 
 export type PostList = {
@@ -59,17 +34,4 @@ export type PostListData = {
   post_list: PostList[];
   count: number;
   total_page: number;
-};
-
-export type CommentData = {
-  id: number;
-  post_id: number;
-  user_name: string;
-  post_title: string;
-  abbr: string;
-  gall_name: string;
-  content: string;
-  ip_address: string;
-  created_at: string;
-  is_login: boolean;
 };

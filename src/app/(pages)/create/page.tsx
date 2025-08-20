@@ -1,10 +1,12 @@
 // --- UI ---
-import CreateGallForm from "@/app/ui/create/CreateGallForm";
+import HeaderText from "@/app/ui/common/HeaderText";
+import CreateForm from "@/app/ui/create/CreateForm";
 
 export default function CreatePage() {
   return (
     <>
-      <CreateGallForm />
+      <HeaderText text="갤러리 생성" />
+      <CreateForm />
     </>
   );
 }

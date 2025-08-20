@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import Form from "next/form";
 
 const style = "border border-neutral-300 rounded-sm outline-none";
 
@@ -32,7 +33,7 @@ function Input({ search }: { search: string }) {
 
 function Button() {
   return (
-    <button type="submit" className={`${style} px-4`}>
+    <button type="submit" className={`${style} px-4 cursor-pointer`}>
       검색
     </button>
   );
@@ -46,15 +47,11 @@ export default function GallSearchForm({ abbr }: { abbr: string }) {
 
   return (
     <div className="flex justify-center mx-2 mt-4">
-      <form
-        action={`/${abbr}`}
-        className="flex gap-1 w-full max-w-sm"
-        method="get"
-      >
+      <Form action={`/${abbr}`} className="flex gap-1 w-full max-w-sm">
         <Select option={option} />
         <Input search={search} />
         <Button />
-      </form>
+      </Form>
     </div>
   );
 }

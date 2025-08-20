@@ -1,40 +1,30 @@
 // --- 데이터 ---
-import { fetchPostListData } from "@/app/lib/data/gall-data";
+import { fetchPostListData } from "../lib/data/gall-data";
 
 // --- UI ---
-import GallUi from "@/app/ui/gall/GallUi";
-import PostUi from "@/app/ui/post/PostUi";
+import GallUi from "../ui/gall/GallUi";
 
-type Params = Promise<{ abbr: string; postId: string }>;
 type SearchParams = Promise<{ [key: string]: string }>;
 
-export default async function PostPage(props: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
-  const params = await props.params;
-  const { abbr, postId } = params;
-
+export default async function BestPage(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
   const { search = "", option = "title", page = "1" } = searchParams;
   const currentPage = Number(page);
   const queryString = new URLSearchParams(searchParams).toString();
 
-  const postListPromise = fetchPostListData({
-    abbr,
+  const popularPostListPromise = fetchPostListData({
     page: currentPage,
     isPopular: true,
     search,
     option,
   });
 
-  const [popularPostListData] = await Promise.all([postListPromise]);
+  const [popularPostListData] = await Promise.all([popularPostListPromise]);
 
   return (
     <>
-      <PostUi />
       <GallUi
-        abbr={abbr}
+        abbr={"best"}
         postList={popularPostListData.post_list}
         currentPage={currentPage}
         totalPage={popularPostListData.total_page}

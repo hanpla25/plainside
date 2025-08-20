@@ -1,44 +1,25 @@
+import { createClient } from "@/app/utils/supabase/server";
+
+// --- 타입 ---
+import { Gall, PostListData } from "../definitions";
 import { redirect } from "next/navigation";
-import { createClient } from "../../utils/supabase/server";
 
-// --- Types ---
-import { Gall, GallMeta, PostListData } from "../definitions";
-
-// --- Constants ---
+// --- 상수 ---
 import {
   POST_LIST_ITEM_PER_PAGE,
   POST_LIST_LIKE_CUT,
-} from "../../constants/query-constants";
+} from "@/app/constants/fetch-post-constants";
 
-// --- Utils ---
-import { maskIpAddress } from "../../utils/masking";
+// --- 유틸 ---
+import { maskIpAddress } from "@/app/utils/masking";
 
-export async function fetchGallListData(): Promise<Gall[]> {
+export async function fetchGallListData(
+  sort?: "popular" | "newest",
+  size?: number
+): Promise<Gall[]> {
   const supabase = await createClient();
 
-  const query = await supabase.from("galleries").select("*");
-
-  const { data, error } = query;
-
-  if (error) {
-    console.error(error);
-
-    return [];
-  }
-
-  return data ?? [];
-}
-
-export async function fetchGallListNameAbbr({
-  sort,
-  size,
-}: {
-  sort?: "popular" | "newest";
-  size?: number;
-}): Promise<GallMeta[]> {
-  const supabase = await createClient();
-
-  const query = supabase.from("galleries").select("name,abbr");
+  const query = supabase.from("galls").select("abbr,name");
 
   if (sort === "newest") query.order("id", { ascending: false });
   if (sort === "popular") query.order("today_post_count", { ascending: false });
@@ -55,12 +36,12 @@ export async function fetchGallListNameAbbr({
   return data ?? [];
 }
 
-export async function fetchGallAbbrName(abbr: string): Promise<GallMeta> {
+export async function fetchGallName(abbr: string): Promise<string> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from("galleries")
-    .select("name,abbr")
+    .from("galls")
+    .select("name")
     .eq("abbr", abbr)
     .single();
 
@@ -69,19 +50,19 @@ export async function fetchGallAbbrName(abbr: string): Promise<GallMeta> {
     redirect("/");
   }
 
-  return data;
+  return data.name;
 }
 
 export async function fetchPostListData({
   abbr,
-  popular,
   page = 1,
+  isPopular,
   search,
   option,
 }: {
   abbr?: string;
-  popular?: boolean;
   page: number;
+  isPopular?: boolean;
   search?: string;
   option?: string;
 }): Promise<PostListData> {
@@ -100,7 +81,7 @@ export async function fetchPostListData({
     .order("id", { ascending: false });
 
   if (abbr) query.eq("abbr", abbr);
-  if (popular) query.gte("like_count", POST_LIST_LIKE_CUT);
+  if (isPopular) query.gte("like_count", POST_LIST_LIKE_CUT);
   if (search && option) query.ilike(option, `%${search}%`);
 
   const { data, error, count } = await query;

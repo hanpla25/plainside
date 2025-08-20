@@ -1,43 +1,43 @@
-// --- Constants ---
-import { BEST_ABBR } from "@/app/constants/href-constants";
-import { getAbbrPageData } from "@/app/lib/abbr-page-helper";
+// --- 데이터 ---
+import { fetchGallListData, fetchPostListData } from "@/app/lib/data/gall-data";
 
-// --- Data ---
-import { fetchGallListNameAbbr } from "@/app/lib/data/gall-data";
+// --- 상수 ---
+import { fetchLayoutPostCount } from "@/app/constants/fetch-post-constants";
 
 // --- UI ---
-import GallHeader from "@/app/ui/gall/GallHeader";
+import HeaderText from "@/app/ui/common/HeaderText";
 import GallUi from "@/app/ui/gall/GallUi";
-import GallList from "@/app/ui/layout/gall-list";
+import PopularGall from "@/app/ui/home/PopularGall";
 
-type Params = Promise<{ abbr: string }>;
 type SearchParams = Promise<{ [key: string]: string }>;
 
-export default async function HomePage(props: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
+export default async function HomePage(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
+  const { page = "1" } = searchParams;
+  const currentPage = Number(page);
+  const queryString = new URLSearchParams(searchParams).toString();
 
-  const popularGallNameList = await fetchGallListNameAbbr({
-    sort: "popular",
-    size: 5,
+  const popularPostListPromise = fetchPostListData({
+    page: currentPage,
+    isPopular: true,
   });
+  const popularGallPromise = fetchGallListData("popular", fetchLayoutPostCount);
 
-  const data = await getAbbrPageData({ searchParams, isPopular: true });
+  const [popularGallData, popularPostListData] = await Promise.all([
+    popularGallPromise,
+    popularPostListPromise,
+  ]);
 
   return (
     <>
-      <div className="mb-2 lg:hidden">
-        <GallList label={"인기 갤러리"} gallList={popularGallNameList} />
-      </div>
-      <GallHeader abbr={BEST_ABBR} gallName={"실시간 베스트"} />
+      <PopularGall popularGallData={popularGallData} />
+      <HeaderText text={"실시간 베스트"} href={"/best"} isLink={true} />
       <GallUi
-        abbr={BEST_ABBR}
-        postListData={data.postListData}
-        currentPage={data.currentPage}
-        totalPage={data.totalPage}
-        queryString={data.queryString}
+        abbr="best"
+        postList={popularPostListData.post_list}
+        currentPage={currentPage}
+        totalPage={popularPostListData.total_page}
+        queryString={queryString}
       />
     </>
   );

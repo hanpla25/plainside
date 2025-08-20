@@ -1,14 +1,14 @@
-// --- Types ---
-import { PostListData } from "@/app/lib/definitions";
+// --- 타입 ---
+import { PostList } from "@/app/lib/definitions";
 
-// --- Ui ---
+// --- UI ---
 import GallPostList from "./GallPostList";
 import GallSearchForm from "./GallSearchForm";
 import Pagination from "../common/Pagination";
 
 type Props = {
   abbr: string;
-  postListData: PostListData;
+  postList: PostList[];
   currentPage: number;
   totalPage: number;
   queryString: string;
@@ -16,20 +16,16 @@ type Props = {
 
 export default function GallUi({
   abbr,
-  postListData,
+  postList,
   currentPage,
   totalPage,
   queryString,
 }: Props) {
   return (
-    <>
-      <GallPostList
-        abbr={abbr}
-        postList={postListData.post_list}
-        queryString={queryString}
-      />
+    <div>
+      <GallPostList abbr={abbr} postList={postList} queryString={queryString} />
       <GallSearchForm abbr={abbr} />
       <Pagination currentPage={currentPage} totalPage={totalPage} />
-    </>
+    </div>
   );
 }

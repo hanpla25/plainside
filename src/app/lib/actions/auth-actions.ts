@@ -1,11 +1,11 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { createClient } from "@/app/utils/supabase/server";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-// --- Constants ---
+// --- jwt ---
+import jwt from "jsonwebtoken";
 import {
   idRegex,
   JWT_EXPIRES_IN,
@@ -14,27 +14,8 @@ import {
   usernameRegex,
 } from "@/app/constants/auth-constants";
 
-export async function signup(
-  _prevState: string | null,
-  formData: FormData
-): Promise<string | null> {
-  const rawData = {
-    username: formData.get("username"),
-    id: formData.get("id"),
-    password: formData.get("password"),
-  };
-
-  const { username, id, password } = rawData;
-
-  if (
-    typeof username !== "string" ||
-    typeof id !== "string" ||
-    typeof password !== "string"
-  ) {
-    return "잘못된 형식이에요.";
-  }
-
-  if (!usernameRegex.test(username)) {
+const authSchema = (name: string, id: string, password: string) => {
+  if (!usernameRegex.test(name)) {
     return "사용자 이름은 2~8자의 한글 또는 영어만 가능합니다.";
   }
 
@@ -45,36 +26,25 @@ export async function signup(
   if (!passwordRegex.test(password)) {
     return "비밀번호는 4~10자의 영어 또는 숫자만 가능합니다.";
   }
+};
 
-  const supabase = await createClient();
-
-  const { error } = await supabase
-    .from("users")
-    .insert({ id: id, name: username, password: password });
-
-  if (error) {
-    console.error(error);
-
-    return "이미 사용중인 아이디거나 닉네임 입니다.";
-  }
-
-  redirect("/signin");
-}
-
-export async function signin(
+export async function signInAction(
   _prevState: string | null,
   formData: FormData
-): Promise<string | null> {
-  const rawData = {
-    id: formData.get("id"),
-    password: formData.get("password"),
-    callbackUrl: formData.get("callbackUrl") as string,
-  };
+): Promise<string> {
+  const id = formData.get("id");
+  const password = formData.get("password");
+  const callbackUrl = formData.get("callbackUrl");
 
-  const { id, password, callbackUrl } = rawData;
+  if (
+    typeof id !== "string" ||
+    typeof password !== "string" ||
+    typeof callbackUrl !== "string"
+  ) {
+    return "잘못된 요청이에요.";
+  }
 
   const supabase = await createClient();
-
   const { data: user, error } = await supabase
     .from("users")
     .select("*")
@@ -106,7 +76,41 @@ export async function signin(
   redirect(callbackUrl);
 }
 
-export async function signout(): Promise<void> {
+export async function signUpAction(
+  _prevState: string | null,
+  formData: FormData
+): Promise<string> {
+  const name = formData.get("name");
+  const id = formData.get("id");
+  const password = formData.get("password");
+
+  if (
+    typeof name !== "string" ||
+    typeof id !== "string" ||
+    typeof password !== "string"
+  ) {
+    return "잘못된 요청이에요.";
+  }
+
+  const schmaMsg = authSchema(name, id, password);
+
+  if (schmaMsg) return schmaMsg;
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("users")
+    .insert({ name: name, id: id, password: password });
+
+  if (error) {
+    console.error(error);
+
+    return "이미 사용중인 아이디거나 닉네임 입니다.";
+  }
+
+  redirect("/signin");
+}
+
+export async function signOut() {
   const cookieStore = await cookies();
 
   cookieStore.delete("token");

@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
-// --- Styles ---
-import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
+// --- 데이터 요청 ---
+import { getUserToken } from "./lib/data/user-data";
 
 // --- UI ---
-import Header from "./ui/layout/header";
-import RecentGall from "./ui/layout/recent-gall";
+import Header from "./ui/header";
+import RightItems from "./ui/right-items/RightItems";
+import RecentGall from "./ui/recent-gall";
+import { fetchGallListData } from "./lib/data/gall-data";
 
-// --- Data ---
-import { fetchGallListNameAbbr } from "./lib/data/gall-data";
-import { getUserFromToken } from "./lib/data/user-data";
-import RightItems from "./ui/layout/right-items";
+// --- 스타일 ---
+import "./globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,27 +31,23 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const user = await getUserFromToken();
-  const isLogin = user ? true : false;
-
-  const [gallNameList, popularGallNameList, newestGallNameList] =
+  const [userToken, popularGallData, newestGallData, allGallData] =
     await Promise.all([
-      fetchGallListNameAbbr({}),
-      fetchGallListNameAbbr({ sort: "popular", size: 5 }),
-      fetchGallListNameAbbr({ sort: "newest", size: 5 }),
+      getUserToken(),
+      fetchGallListData("popular", 5),
+      fetchGallListData("newest", 5),
+      fetchGallListData(),
     ]);
+
+  const isLogin = userToken ? true : false;
 
   return (
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-800 max-w-5xl mx-auto`}
       >
-        {/* 헤더 */}
-        <Header isLogin={isLogin} gallList={gallNameList} />
-
-        {/* 최근 갤러리 */}
-        <RecentGall gallList={gallNameList} />
-
+        <Header isLogin={isLogin} />
+        <RecentGall allGallData={allGallData} />
         {/* 메인 */}
         <div className="lg:flex gap-8 mb-30">
           {/* 왼쪽 */}
@@ -60,9 +56,8 @@ export default async function RootLayout({
           {/* 오른쪽 */}
           <aside className="lg:basis-1/4 hidden lg:flex flex-col gap-16 px-4">
             <RightItems
-              user={user}
-              popularGallNameList={popularGallNameList}
-              newestGallNameList={newestGallNameList}
+              popularGallData={popularGallData}
+              newestGallData={newestGallData}
             />
           </aside>
         </div>

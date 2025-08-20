@@ -2,9 +2,9 @@
 
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { createClient } from "../../utils/supabase/server";
+import { createClient } from "@/app/utils/supabase/server";
 
-// --- types ---
+// --- 타입 ---
 import { UserData, UserPayload } from "../definitions";
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -13,7 +13,7 @@ if (!jwtSecret) {
 }
 const JWT_SECRET: string = jwtSecret;
 
-export async function getUserFromToken(): Promise<UserPayload | null> {
+export async function getUserToken(): Promise<UserPayload | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -39,20 +39,26 @@ export async function getUserFromToken(): Promise<UserPayload | null> {
 }
 
 export async function fetchUserData(
-  token: UserPayload
+  user?: UserPayload | null
 ): Promise<UserData | null> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("users")
-    .select("id,name,write_count,comment_count,created_at")
-    .eq("id", token.user_id)
+    .select("name,write_count,comment_count,created_at")
+    .eq("id", user?.user_id)
     .single();
 
   if (error) {
-    console.error("유저 데이터 조회 에러:", error.message);
-    return null;
+    console.error(error);
   }
 
   return data ?? null;
+}
+
+export async function fetchCurrentUserData() {
+  const user = await getUserToken();
+  if (!user) return null;
+
+  return await fetchUserData(user);
 }

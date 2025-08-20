@@ -1,11 +1,11 @@
-import SigninForm from "@/app/ui/auth/SigninForm";
+// --- UI ---
+import HeaderText from "@/app/ui/common/HeaderText";
+import SigninForm from "@/app/ui/signin/SigninForm";
 
-export default function SignInPage() {
+export default function SigninPage() {
   return (
     <>
-      <h1 className="lg:px-0 px-2 py-2">
-        <span className="font bold text-xl">로그인</span>
-      </h1>
+      <HeaderText text="로그인" />
       <SigninForm />
     </>
   );
