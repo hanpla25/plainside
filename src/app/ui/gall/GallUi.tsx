@@ -21,7 +21,6 @@ export default function GallUi({
   totalPage,
   queryString,
 }: Props) {
-  console.log(postList);
   return (
     <div>
       <GallPostList abbr={abbr} postList={postList} queryString={queryString} />

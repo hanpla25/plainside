@@ -4,14 +4,24 @@ export default function formatDate(
 ): string {
   const date = new Date(dateString);
   const now = new Date();
+
   const formatDatePart = (d: Date) =>
     d
       .toLocaleDateString("ko-KR", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
+        timeZone: "Asia/Seoul",
       })
       .replace(/\.$/, "");
+
+  const formatTimePart = (d: Date) =>
+    d.toLocaleTimeString("ko-KR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Seoul",
+    });
 
   if (type === "relative") {
     const diffSec = Math.floor((now.getTime() - date.getTime()) / 1000);
@@ -20,22 +30,19 @@ export default function formatDate(
     if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}시간 전`;
     return `${Math.floor(diffSec / 86400)}일 전`;
   }
-
-  const isToday = date.toDateString() === now.toDateString();
+  const nowKST = new Date(
+    now.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+  );
+  const dateKST = new Date(
+    date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+  );
+  const isToday = dateKST.toDateString() === nowKST.toDateString();
 
   return type === "time"
     ? isToday
-      ? date.toLocaleTimeString("ko-KR", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })
+      ? formatTimePart(date)
       : formatDatePart(date).slice(5)
     : type === "YMD"
     ? formatDatePart(date)
-    : `${formatDatePart(date)} ${date.toLocaleTimeString("ko-KR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })}`;
+    : `${formatDatePart(date)} ${formatTimePart(date)}`;
 }
