@@ -6,7 +6,7 @@ import { fetchPostData } from "@/app/lib/data/post-data";
 import GallUi from "@/app/ui/gall/GallUi";
 import PostUi from "@/app/ui/post/PostUi";
 
-type Params = { postId: string };
+type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string }>;
 
 export default async function BestPostPage(props: {
