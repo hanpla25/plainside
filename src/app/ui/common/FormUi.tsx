@@ -1,3 +1,5 @@
+import { KeyboardEvent } from "react";
+
 export const FormInput = ({
   label,
   type,
@@ -7,6 +9,7 @@ export const FormInput = ({
   defaultValue,
   minLength,
   maxLength,
+  onKeyDown,
 }: {
   label: string;
   type: string;
@@ -16,6 +19,7 @@ export const FormInput = ({
   defaultValue?: string;
   minLength?: number;
   maxLength?: number;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <div className="flex flex-col space-y-1">
@@ -32,6 +36,7 @@ export const FormInput = ({
         defaultValue={defaultValue}
         minLength={minLength}
         maxLength={maxLength}
+        onKeyDown={onKeyDown}
         className="w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:outline-none"
       />
     </div>

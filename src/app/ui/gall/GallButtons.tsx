@@ -39,7 +39,7 @@ const WriteLink = ({ abbr }: { abbr: string }) => {
 
 export default function GallButtons({ abbr, isPopular }: Props) {
   return (
-    <div className="flex items-center justify-between border-b border-neutral-200 px-2 lg:px-0 pb-2 mb-2">
+    <div className="flex items-center justify-between border-b border-neutral-200 px-2 lg:px-0 pb-2">
       <div className="flex gap-4 text-sm font-medium">
         <Tap name="전체글" href={`/${abbr}`} isActive={!isPopular} />
         <Tap

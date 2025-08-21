@@ -108,6 +108,11 @@ export default function WriteForm({
         name="title"
         placeholder="제목"
         maxLength={20}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
       />
 
       <div className="border border-neutral-300">

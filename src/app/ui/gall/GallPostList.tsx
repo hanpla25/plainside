@@ -84,7 +84,7 @@ export default function GallPostList({
   return (
     <ul className="divide-y divide-neutral-200 min-h-[529px]">
       {postList.map((item) => (
-        <li key={item.id} className="hover:bg-neutral-50">
+        <li key={item.id} className="hover:bg-neutral-50 py-2">
           <Link
             href={`/${abbr}/${item.id}?${queryString}`}
             className="block px-2 pb-2 lg:px-0"
