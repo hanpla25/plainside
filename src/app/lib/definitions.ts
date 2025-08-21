@@ -35,3 +35,19 @@ export type PostListData = {
   count: number;
   total_page: number;
 };
+
+export type Post = {
+  id: number;
+  user_name: string;
+  title: string;
+  content: string;
+  abbr: string;
+  gall_name: string;
+  view_count: number;
+  like_count: number;
+  dislike_count: number;
+  comment_count: number;
+  is_login: boolean;
+  ip_address: string;
+  created_at: string;
+};

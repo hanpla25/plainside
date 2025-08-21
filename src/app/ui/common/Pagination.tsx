@@ -95,7 +95,7 @@ export default function Pagination({
         </div>
 
         {/* 다음 버튼 */}
-        {currentPage === totalPage ? (
+        {currentPage === totalPage || totalPage === 0 ? (
           <Link href={"#"} className="px-2 md:px-0">
             <ChevronRight color="#b3b3b3" />
           </Link>

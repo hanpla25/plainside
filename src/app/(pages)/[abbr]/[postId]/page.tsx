@@ -5,6 +5,7 @@ import { fetchPostListData } from "@/app/lib/data/gall-data";
 import GallUi from "@/app/ui/gall/GallUi";
 import PostUi from "@/app/ui/post/PostUi";
 import GallButtons from "@/app/ui/gall/GallButtons";
+import { fetchPostData } from "@/app/lib/data/post-data";
 
 type Params = Promise<{ abbr: string; postId: string }>;
 type SearchParams = Promise<{ [key: string]: string }>;
@@ -14,13 +15,15 @@ export default async function PostPage(props: {
   searchParams: SearchParams;
 }) {
   const params = await props.params;
-  const { abbr } = params;
+  const { abbr, postId } = params;
 
   const searchParams = await props.searchParams;
   const { search = "", option = "title", page = "1", mode = "" } = searchParams;
   const currentPage = Number(page);
   const queryString = new URLSearchParams(searchParams).toString();
   const isPopular = mode === "popular" ? true : false;
+
+  const postDataPromise = fetchPostData(abbr, Number(postId));
 
   const postListPromise = fetchPostListData({
     abbr,
@@ -30,17 +33,20 @@ export default async function PostPage(props: {
     option,
   });
 
-  const [popularPostListData] = await Promise.all([postListPromise]);
+  const [postData, postListData] = await Promise.all([
+    postDataPromise,
+    postListPromise,
+  ]);
 
   return (
     <>
-      <PostUi />
+      <PostUi postData={postData} />
       <GallButtons abbr={abbr} isPopular={isPopular} />
       <GallUi
         abbr={abbr}
-        postList={popularPostListData.post_list}
+        postList={postListData.post_list}
         currentPage={currentPage}
-        totalPage={popularPostListData.total_page}
+        totalPage={postListData.total_page}
         queryString={queryString}
       />
     </>

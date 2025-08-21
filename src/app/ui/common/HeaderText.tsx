@@ -6,12 +6,11 @@ type HeaderTextProps =
 
 const LinkText = ({ href, text }: { href: string; text: string }) => {
   return (
-    <Link
-      href={href}
-      className="px-2 lg:px-0 pb-2 text-sm font-semibold text-neutral-700"
-    >
-      {text}
-    </Link>
+    <div className="px-2 lg:px-0 pb-2 ">
+      <Link href={href} className="text-sm font-semibold text-neutral-700">
+        {text}
+      </Link>
+    </div>
   );
 };
 

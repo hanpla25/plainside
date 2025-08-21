@@ -139,6 +139,10 @@ export async function writeAction(
     return "잘못된 요청이에요.";
   }
 
+  if (content.length === 0) {
+    return "내용을 입력해주세요.";
+  }
+
   if (!isLogin) {
     if (typeof name !== "string" || typeof password !== "string") {
       return "잘못된 요청이에요.";
@@ -201,4 +205,31 @@ export async function writeAction(
   const postId = data.id;
 
   redirect(`/${abbr}/${postId}`);
+}
+
+export async function increaseCollumFromPosts({
+  postId,
+  collum,
+}: {
+  postId: number;
+  collum: "like_count" | "dislike_count" | "comment_count";
+}): Promise<number | null> {
+  const supabase = await createClient();
+
+  const collumMap = {
+    like_count: "increment_post_like_count",
+    dislike_count: "increment_post_dislike_count",
+    comment_count: "increment_post_comment_count",
+  };
+
+  const { data, error } = await supabase.rpc(collumMap[collum], {
+    post_id: postId,
+  });
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data?.[0]?.[collum] ?? null;
 }
