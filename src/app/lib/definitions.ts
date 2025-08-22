@@ -51,3 +51,13 @@ export type Post = {
   ip_address: string;
   created_at: string;
 };
+
+export type DBComment = {
+  id: number;
+  post_id: number;
+  parent_id: number | null;
+  user_name: string;
+  content: string;
+  is_login: boolean;
+  created_at: string;
+};

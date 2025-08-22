@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 
 // --- 타입 ---
-import { Post } from "../definitions";
+import { DBComment, Post } from "../definitions";
 
 // --- 유틸 ---
 import { maskIpAddress } from "@/app/utils/masking";
@@ -48,4 +48,21 @@ export async function fetchPostData(
     is_login: data.is_login,
     ip_address: maskedIp,
   };
+}
+
+export async function fetchCommentData(postId: number): Promise<DBComment[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("postId", postId);
+
+  if (error) {
+    console.error(error);
+
+    return [];
+  }
+
+  return data;
 }

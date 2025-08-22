@@ -21,5 +21,9 @@ export default function PostContent({ content }: { content: string }) {
 
   if (!editor) return null;
 
-  return <EditorContent editor={editor} />;
+  return (
+    <div className="p-2">
+      <EditorContent editor={editor} />
+    </div>
+  );
 }

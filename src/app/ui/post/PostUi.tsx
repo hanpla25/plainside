@@ -1,11 +1,16 @@
-// --- Types ---
+import { Suspense } from "react";
 
+// --- Types ---
 import { Post } from "@/app/lib/definitions";
+
+// --- 유틸 ---
 import formatDate from "@/app/utils/format-date";
-import PostContent from "./PostContent";
-import PostButtons from "./PostButtons";
 
 // --- UI ---
+import PostContent from "./PostContent";
+import PostButtons from "./PostButtons";
+import PostComment from "./PostComment";
+import PostCommentForm from "./PostCommentForm";
 
 type Props = {
   postData: Post;
@@ -53,7 +58,7 @@ const Info = ({
 
 export default function PostUi({ postData }: Props) {
   return (
-    <div>
+    <div className="mb-4">
       <Title title={postData.title} createdAt={postData.created_at} />
       <Info
         userName={postData.user_name}
@@ -63,14 +68,19 @@ export default function PostUi({ postData }: Props) {
         isLogin={postData.is_login}
         ipAddress={postData.ip_address}
       />
-      <div className="p-2">
-        <PostContent content={postData.content} />
-      </div>
+      <PostContent content={postData.content} />
       <PostButtons
         post_id={postData.id}
         like_count={postData.like_count}
         dislike_count={postData.dislike_count}
       />
+      <Suspense fallback={null}>
+        <PostComment
+          postId={postData.id}
+          commentCount={postData.comment_count}
+        />
+      </Suspense>
+      <PostCommentForm />
     </div>
   );
 }

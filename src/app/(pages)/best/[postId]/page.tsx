@@ -1,6 +1,7 @@
 // --- 데이터 ---
 import { fetchPostListData } from "@/app/lib/data/gall-data";
 import { fetchPostData } from "@/app/lib/data/post-data";
+import HeaderText from "@/app/ui/common/HeaderText";
 
 // --- UI ---
 import GallUi from "@/app/ui/gall/GallUi";
@@ -34,11 +35,10 @@ export default async function BestPostPage(props: {
     popularPostListPromise,
   ]);
 
-  console.log(postData);
-
   return (
     <>
       <PostUi postData={postData} />
+      <HeaderText text="실시간 베스트" isLink={true} href="/best" />
       <GallUi
         abbr="best"
         postList={popularPostListData.post_list}
