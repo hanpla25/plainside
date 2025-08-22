@@ -18,7 +18,7 @@ const List = ({ gallData }: { gallData: Gall[] }) => {
       {gallData.map((item, i) => (
         <div key={item.abbr}>
           <span>{i + 1}. </span>
-          <Link href={item.abbr}>{item.name}</Link>
+          <Link href={`/${item.abbr}`}>{item.name}</Link>
         </div>
       ))}
     </div>

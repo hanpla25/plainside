@@ -10,9 +10,14 @@ type Params = Promise<{ abbr: string }>;
 export default async function WritePage(props: { params: Params }) {
   const params = await props.params;
   const abbr = params.abbr;
-  const gallName = await fetchGallName(abbr);
+  const gallNamePromise = fetchGallName(abbr);
+  const userTokenPromise = getUserToken();
 
-  const userToken = await getUserToken();
+  const [gallName, userToken] = await Promise.all([
+    gallNamePromise,
+    userTokenPromise,
+  ]);
+  
   const isLogin = userToken ? true : false;
   const userName = userToken ? userToken.user_name : "ㅇㅇ";
 
