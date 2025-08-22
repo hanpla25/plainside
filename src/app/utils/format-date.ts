@@ -1,6 +1,6 @@
 export default function formatDate(
   dateString: string,
-  type: "time" | "YMD" | "relative" | "YMDT"
+  type: "time" | "YMD" | "relative" | "YMDT" | "MDT"
 ): string {
   const date = new Date(dateString);
   const now = new Date();
@@ -30,6 +30,7 @@ export default function formatDate(
     if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}시간 전`;
     return `${Math.floor(diffSec / 86400)}일 전`;
   }
+
   const nowKST = new Date(
     now.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
   );
@@ -38,11 +39,17 @@ export default function formatDate(
   );
   const isToday = dateKST.toDateString() === nowKST.toDateString();
 
-  return type === "time"
-    ? isToday
-      ? formatTimePart(date)
-      : formatDatePart(date).slice(5)
-    : type === "YMD"
-    ? formatDatePart(date)
-    : `${formatDatePart(date)} ${formatTimePart(date)}`;
+  switch (type) {
+    case "time":
+      return isToday ? formatTimePart(date) : formatDatePart(date).slice(5);
+    case "YMD":
+      return formatDatePart(date);
+    case "YMDT":
+      return `${formatDatePart(date)} ${formatTimePart(date)}`;
+    case "MDT":
+      const md = formatDatePart(date).slice(5);
+      return `${md} ${formatTimePart(date)}`;
+    default:
+      return formatDatePart(date);
+  }
 }

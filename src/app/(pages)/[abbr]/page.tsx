@@ -17,6 +17,7 @@ export default async function AbbrPage(props: {
 
   const searchParams = await props.searchParams;
   const { search = "", option = "title", page = "1", mode = "" } = searchParams;
+
   const currentPage = Number(page);
   const queryString = new URLSearchParams(searchParams).toString();
   const isPopular = mode === "popular" ? true : false;

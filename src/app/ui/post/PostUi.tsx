@@ -43,7 +43,7 @@ const Info = ({
   isLogin: boolean;
 }) => {
   return (
-    <div className="flex items-center justify-between px-3 py-1.5 border-b border-neutral-200 mb-4">
+    <div className="flex items-center justify-between px-2 lg:px-1 py-1.5 border-b border-neutral-200 mb-4">
       <span className="font-medium">
         {userName} {!isLogin && ipAddress}
       </span>

@@ -8,6 +8,7 @@ import Image from "@tiptap/extension-image";
 import Bold from "@tiptap/extension-bold";
 import Italic from "@tiptap/extension-italic";
 import Heading from "@tiptap/extension-heading";
+import { useEffect } from "react";
 
 export default function PostContent({ content }: { content: string }) {
   const json = JSON.parse(content) as JSONContent;
@@ -18,6 +19,10 @@ export default function PostContent({ content }: { content: string }) {
     content: json,
     extensions: [Document, Paragraph, Text, Image, Bold, Italic, Heading],
   });
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [content]);
 
   if (!editor) return null;
 

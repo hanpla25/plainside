@@ -17,7 +17,7 @@ export default async function WritePage(props: { params: Params }) {
     gallNamePromise,
     userTokenPromise,
   ]);
-  
+
   const isLogin = userToken ? true : false;
   const userName = userToken ? userToken.user_name : "ㅇㅇ";
 

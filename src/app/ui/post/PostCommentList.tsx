@@ -21,7 +21,7 @@ const CommentItem = ({
       <div className="px-2 py-3 border-b border-neutral-300 space-y-1.5">
         <p className="text-sm">
           <span className="mr-2 font-semibold">{comment.user_name}</span>
-          <span>{formatDate(comment.created_at, "time")}</span>
+          <span>{formatDate(comment.created_at, "MDT")}</span>
         </p>
         <p className="text-sm">{comment.content}</p>
       </div>
@@ -37,7 +37,7 @@ const CommentItem = ({
                     ㄴ
                   </span>
                   <span className="mr-2 font-semibold">{reply.user_name}</span>
-                  <span>{formatDate(reply.created_at, "time")}</span>
+                  <span>{formatDate(reply.created_at, "MDT")}</span>
                 </p>
                 <p className="ml-2 text-sm">{reply.content}</p>
               </div>

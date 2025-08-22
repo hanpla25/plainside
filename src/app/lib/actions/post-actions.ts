@@ -233,7 +233,3 @@ export async function increaseCollumFromPosts({
 
   return data?.[0]?.[collum] ?? null;
 }
-
-export async function writeCommentAction(postId:number) {
-  
-}
