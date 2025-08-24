@@ -14,8 +14,11 @@ export default async function BestPostPage(props: {
   params: Params;
   searchParams: SearchParams;
 }) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ]);
+  
   const postId = Number(params.postId);
   const { search = "", option = "title", page = "1" } = searchParams;
   const currentPage = Number(page);

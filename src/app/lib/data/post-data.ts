@@ -15,7 +15,7 @@ export async function fetchPostData(
 ): Promise<Post> {
   const supabase = await createClient();
 
-  await supabase.rpc("increment_post_view", { post_id: postId });
+  supabase.rpc("increment_post_view", { post_id: postId });
 
   const { data, error } = await supabase
     .from("posts")
@@ -31,22 +31,9 @@ export async function fetchPostData(
     redirect(`/${abbr}`);
   }
 
-  const maskedIp = maskIpAddress(data.ip_address);
-
   return {
-    id: data.id,
-    user_name: data.user_name,
-    title: data.title,
-    content: data.content,
-    abbr: data.abbr,
-    gall_name: data.gall_name,
-    view_count: data.view_count,
-    like_count: data.like_count,
-    dislike_count: data.dislike_count,
-    comment_count: data.comment_count,
-    created_at: data.created_at,
-    is_login: data.is_login,
-    ip_address: maskedIp,
+    ...data,
+    ip_address: maskIpAddress(data.ip_address),
   };
 }
 
