@@ -122,10 +122,8 @@ export async function writeAction(
   _prevState: string | null,
   formData: FormData
 ): Promise<string> {
-  const userToken = await getUserToken();
+  const [userToken, ipAddress] = await Promise.all([getUserToken(), getIp()]);
   const isLogin = !!userToken;
-
-  const ipAddress = await getIp();
 
   const userId = userToken ? userToken.user_id : null;
   const name = userToken ? userToken.user_name : formData.get("name");
@@ -175,7 +173,7 @@ export async function writeAction(
       password: password,
       ip_address: ipAddress,
     })
-    .select()
+    .select("id")
     .single();
 
   if (error) {
@@ -232,4 +230,33 @@ export async function increaseCollumFromPosts({
   }
 
   return data?.[0]?.[collum] ?? null;
+}
+
+export async function commentAction(formData: FormData) {
+  const supabase = await createClient();
+  const [userToken, ipAddress] = await Promise.all([getUserToken(), getIp()]);
+  const isLogin = !!userToken;
+
+  const abbr = formData.get("abbr");
+  const postId = formData.get("postId");
+  const userName = userToken ? userToken.user_name : formData.get("name");
+  const password = formData.get("password");
+  const content = formData.get("content");
+  const parentId = formData.get("parentId");
+
+  const { error } = await supabase.from("comments").insert({
+    post_id: postId,
+    user_name: userName,
+    password,
+    content,
+    parent_id: parentId,
+    is_login: isLogin,
+    ip_address: ipAddress,
+  });
+
+  if (error) {
+    console.error(error);
+  }
+
+  redirect(`/${abbr}/${postId}`);
 }

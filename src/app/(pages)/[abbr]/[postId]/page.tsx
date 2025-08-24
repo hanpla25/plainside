@@ -41,7 +41,7 @@ export default async function PostPage(props: {
 
   return (
     <>
-      <PostUi postData={postData} />
+      <PostUi abbr={abbr} postData={postData} />
       <GallButtons abbr={abbr} isPopular={isPopular} />
       <GallUi
         abbr={abbr}

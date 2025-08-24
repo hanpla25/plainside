@@ -10,9 +10,9 @@ import formatDate from "@/app/utils/format-date";
 import PostContent from "./PostContent";
 import PostButtons from "./PostButtons";
 import PostComment from "./PostComment";
-import PostCommentForm from "./PostCommentForm";
 
 type Props = {
+  abbr: string;
   postData: Post;
 };
 
@@ -56,7 +56,7 @@ const Info = ({
   );
 };
 
-export default function PostUi({ postData }: Props) {
+export default function PostUi({ abbr, postData }: Props) {
   return (
     <div className="mb-4">
       <Title title={postData.title} createdAt={postData.created_at} />
@@ -76,11 +76,11 @@ export default function PostUi({ postData }: Props) {
       />
       <Suspense fallback={null}>
         <PostComment
+          abbr={abbr}
           postId={postData.id}
           commentCount={postData.comment_count}
         />
       </Suspense>
-      <PostCommentForm />
     </div>
   );
 }
