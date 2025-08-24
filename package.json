@@ -27,6 +27,7 @@
     "@tiptap/pm": "^3.0.7",
     "@tiptap/react": "^3.0.7",
     "@tiptap/starter-kit": "^3.0.7",
+    "@tiptap/static-renderer": "^3.3.0",
     "jsonwebtoken": "^9.0.2",
     "lodash.throttle": "^4.1.1",
     "lucide-react": "^0.534.0",
