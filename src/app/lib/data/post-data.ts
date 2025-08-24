@@ -15,7 +15,7 @@ export async function fetchPostData(
 ): Promise<Post> {
   const supabase = await createClient();
 
-  supabase.rpc("increment_post_view", { post_id: postId });
+  await supabase.rpc("increment_post_view", { post_id: postId });
 
   const { data, error } = await supabase
     .from("posts")
