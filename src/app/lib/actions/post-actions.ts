@@ -157,7 +157,7 @@ export async function writeAction(
 
   updateContentImagePaths(contentObj);
 
-  const updatedContent = JSON.stringify(contentObj);
+  const updatedContent = contentObj;
 
   const supabase = await createClient();
   const { data, error } = await supabase

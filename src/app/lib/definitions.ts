@@ -40,7 +40,7 @@ export type Post = {
   id: number;
   user_name: string;
   title: string;
-  content: string;
+  content: object;
   abbr: string;
   gall_name: string;
   view_count: number;
