@@ -18,7 +18,7 @@ export default async function BestPostPage(props: {
     props.params,
     props.searchParams,
   ]);
-  
+
   const postId = Number(params.postId);
   const { search = "", option = "title", page = "1" } = searchParams;
   const currentPage = Number(page);
@@ -40,7 +40,7 @@ export default async function BestPostPage(props: {
 
   return (
     <>
-      <PostUi postData={postData} />
+      <PostUi abbr="best" postData={postData} />
       <HeaderText text="실시간 베스트" isLink={true} href="/best" />
       <GallUi
         abbr="best"
